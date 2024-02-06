@@ -15,10 +15,11 @@ defineProps<{
     <div class="flex justify-between w-full">
       <div class="flex flex-col ml-[.938rem]">
         <span class="text-soft font-bold">{{ fullName }}</span>
-        <span class="text-sm text-green">Typing...</span>
+        <!--        <span class="text-sm text-green">Typing...</span>-->
+        <span class="text-gray-primary text-sm">Hello everyone !</span>
       </div>
       <div class="flex flex-col items-end">
-        <span class="text-gray text-[.813rem]">4:30 PM</span>
+        <span class="text-gray-primary text-[.813rem]">4:30 PM</span>
         <span
           class="flex items-center justify-center bg-primary rounded-full w-4 h-4 text-xs font-bold"
           >2</span

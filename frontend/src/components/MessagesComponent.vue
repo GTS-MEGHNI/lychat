@@ -6,7 +6,7 @@ import MessageComponent from '@/components/MessageComponent.vue'
 <template>
   <div class="px-[1.875rem] h-full bg-dark-accent text-white w-fit">
     <div class="mb-[1.563rem]">
-      <h1 class="text-3xl font-bold">Messages</h1>
+      <h1 class="text-3xl font-bold pt-[1.813rem]">Messages</h1>
     </div>
     <div class="mb-[2.5rem]">
       <SearchInputComponent placeholder="search" iconPosition="START" />
