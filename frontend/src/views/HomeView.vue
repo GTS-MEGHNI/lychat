@@ -1,12 +1,11 @@
 <script setup lang="ts">
-
-import SideBarView from "@/views/SideBarView.vue";
+import SideBarComponent from '@/components/SideBarComponent.vue'
+import HeaderComponent from '@/components/HeaderComponent.vue'
 </script>
 
 <template>
-  <SideBarView />
+  <HeaderComponent />
+  <SideBarComponent />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
