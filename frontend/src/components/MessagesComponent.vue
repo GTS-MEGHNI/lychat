@@ -4,7 +4,9 @@ import MessageComponent from '@/components/MessageComponent.vue'
 </script>
 
 <template>
-  <div class="px-[1.875rem] h-full bg-dark-accent text-white w-fit">
+  <div
+    class="overflow-y-scroll overflow-x-hidden px-[1.875rem] h-full bg-dark-accent text-white w-[400px]"
+  >
     <div class="mb-[1.563rem]">
       <h1 class="text-3xl font-bold pt-[1.813rem]">Messages</h1>
     </div>
@@ -12,6 +14,11 @@ import MessageComponent from '@/components/MessageComponent.vue'
       <SearchInputComponent placeholder="search" iconPosition="START" />
     </div>
     <div class="flex flex-col gap-[1.875rem]">
+      <MessageComponent avatarUrl="src/assets/pictures/avatar-1.png" fullName="Killian James" />
+      <MessageComponent avatarUrl="src/assets/pictures/avatar-2.png" fullName="Emily Johnson" />
+      <MessageComponent avatarUrl="src/assets/pictures/avatar-3.png" fullName="Sophia Rodriguez" />
+      <MessageComponent avatarUrl="src/assets/pictures/avatar-4.png" fullName="Olivia Smith" />
+      <MessageComponent avatarUrl="src/assets/pictures/avatar-5.png" fullName="Benjamin Williams" />
       <MessageComponent avatarUrl="src/assets/pictures/avatar-1.png" fullName="Killian James" />
       <MessageComponent avatarUrl="src/assets/pictures/avatar-2.png" fullName="Emily Johnson" />
       <MessageComponent avatarUrl="src/assets/pictures/avatar-3.png" fullName="Sophia Rodriguez" />

@@ -8,7 +8,8 @@ export default {
                     primary: '#1e1f25',
                     secondary: '#050505',
                     accent: '#212229',
-                    surface: '#131517'
+                    surface: '#131517',
+                    type: '#282932'
                 },
                 soft: "#E9E9E9",
                 green: '#258C60',

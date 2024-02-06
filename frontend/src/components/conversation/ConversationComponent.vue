@@ -4,7 +4,9 @@ import SelfMadeMessageComponent from '@/components/conversation/SelfMadeMessageC
 </script>
 
 <template>
-  <div class="bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem]">
+  <div
+    class="overflow-y-scroll overflow-x-hidden bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem] mb-4"
+  >
     <div class="flex items-center text-soft mb-[3.75rem]">
       <div class="min-w-[3.75rem] min-h-[3.75rem] mr-[1.125rem]">
         <img src="../../assets/pictures/avatar-7.png" alt="" />
@@ -48,6 +50,46 @@ import SelfMadeMessageComponent from '@/components/conversation/SelfMadeMessageC
       <SelfMadeMessageComponent
         :should-display-info="false"
         content="Hi, Are you still Web Designer ?"
+        contentType="text"
+      />
+      <SelfMadeMessageComponent
+        :should-display-info="false"
+        content="Hi, Are you still Web Designer ?"
+        contentType="text"
+      />
+      <SelfMadeMessageComponent
+        :should-display-info="false"
+        content="Hi, Are you still Web Designer ?"
+        contentType="text"
+      />
+      <SelfMadeMessageComponent
+        :should-display-info="false"
+        content="Hi, Are you still Web Designer ?"
+        contentType="text"
+      />
+      <SelfMadeMessageComponent
+        :should-display-info="false"
+        content="Hi, Are you still Web Designer ?"
+        contentType="text"
+      />
+      <SelfMadeMessageComponent
+        :should-display-info="false"
+        content="Hi, Are you still Web Designer ?"
+        contentType="text"
+      />
+      <SelfMadeMessageComponent
+        :should-display-info="false"
+        content="Hi, Are you still Web Designer ?"
+        contentType="text"
+      />
+      <SelfMadeMessageComponent
+        :should-display-info="false"
+        content="Hi, Are you still Web Designer ?"
+        contentType="text"
+      />
+      <SelfMadeMessageComponent
+        :should-display-info="false"
+        content="Great 🔥  That’s a nice design Idea. 😍👏"
         contentType="text"
       />
     </div>

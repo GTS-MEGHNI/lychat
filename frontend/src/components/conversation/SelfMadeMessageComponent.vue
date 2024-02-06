@@ -16,11 +16,11 @@ defineProps<{
         <div
           :class="
             shouldDisplayInfo
-              ? `rounded-tl-2xl rounded-br-2xl rounded-bl-2xl w-fit bg-dark-primary px-4 py-[.75rem]`
-              : 'rounded-2xl  w-fit bg-dark-primary px-4 py-[.75rem] mt-2'
+              ? `rounded-tl-2xl rounded-br-2xl rounded-bl-2xl w-fit bg-primary px-4 py-[.75rem]`
+              : 'rounded-2xl  w-fit bg-primary px-4 py-[.75rem] mt-2'
           "
         >
-          <p class="text-gray-secondary">{{ content }}</p>
+          <p class="text-white">{{ content }}</p>
         </div>
       </div>
     </div>
