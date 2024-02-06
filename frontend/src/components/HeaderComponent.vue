@@ -1,10 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div
-    class="relative flex items-center justify-center text-white bg-dark-primary h-[4.75rem]"
-  >
+  <div class="relative flex items-center justify-center text-white bg-dark-primary h-[4.75rem]">
     <div class="flex items-center justify-center w-full">
       <div
         class="rounded-[.438rem] py-[.813rem] flex items-center justify-between bg-dark-secondary w-[18.125rem]"
@@ -35,6 +32,4 @@
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
