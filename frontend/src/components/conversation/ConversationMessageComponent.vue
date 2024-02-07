@@ -24,7 +24,7 @@ defineProps<{
               : 'rounded-2xl  w-fit bg-dark-primary px-4 py-[.75rem] mt-2'
           "
         >
-          <p v-if="contentType === 'text'" class="text-gray-secondary">{{ content }}</p>
+          <p v-if="contentType === 'text'" class="text-soft">{{ content }}</p>
           <div v-else class="max-w-64">
             <img class="rounded-lg" :src="content" alt="" />
           </div>
