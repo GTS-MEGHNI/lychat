@@ -12,6 +12,7 @@ export interface ConversationMessage {
   content: string
   owner: Participant
   sentAt: string
+  isCurrentUserMessage: boolean
 }
 
 export interface Conversation {

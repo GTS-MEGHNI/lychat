@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import ConversationMessageComponent from '@/components/conversation/ConversationMessageComponent.vue'
 import SelfMadeMessageComponent from '@/components/conversation/SelfMadeMessageComponent.vue'
+import { onBeforeMount, onMounted, ref } from 'vue'
+import type { ConversationMessage } from '@/types/conversation'
+import { useStore } from 'vuex'
+
+let discussionMessages = ref < Array<ConversationMessage>([])
+
+onBeforeMount(() => {
+  let store = useStore()
+  discussionMessages = store.getters.getDiscussionMessages
+})
 </script>
 
 <template>
@@ -16,81 +26,25 @@ import SelfMadeMessageComponent from '@/components/conversation/SelfMadeMessageC
         <span class="text-gray-primary text-sm">Active 4h ago</span>
       </div>
     </div>
-    <div>
+    <div v-for="(discussionMessage, index) in discussionMessages" :key="index">
       <ConversationMessageComponent
-        :should-display-info="true"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
+        v-if="!discussionMessage.isCurrentUserMessage"
+        :id="discussionMessage.id"
+        :type="discussionMessage.type"
+        :content="discussionMessage.content"
+        :owner="discussionMessage.owner"
+        :sentAt="discussionMessage.sentAt"
+        :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
       />
-      <ConversationMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <ConversationMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <ConversationMessageComponent
-        :should-display-info="false"
-        contentType="image"
-        content="https://wallpapersmug.com/download/2560x1440/c1284b/moraine-lake-banff-national-park.jpg"
-      />
+
       <SelfMadeMessageComponent
-        :should-display-info="true"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Hi, Are you still Web Designer ?"
-        contentType="text"
-      />
-      <SelfMadeMessageComponent
-        :should-display-info="false"
-        content="Great 🔥  That’s a nice design Idea. 😍👏"
-        contentType="text"
+        v-else
+        :id="discussionMessage.id"
+        :type="discussionMessage.type"
+        :content="discussionMessage.content"
+        :owner="discussionMessage.owner"
+        :sentAt="discussionMessage.sentAt"
+        :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
       />
     </div>
   </div>
