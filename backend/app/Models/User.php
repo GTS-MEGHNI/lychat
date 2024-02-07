@@ -64,7 +64,7 @@ class User extends Authenticatable
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'avatar' => $this->avatar,
+            'avatarUrl' => $this->avatar,
         ];
     }
 }
