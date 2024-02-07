@@ -4,6 +4,11 @@ import type { Conversation, ConversationMessage } from '@/types/conversation'
 
 export default createStore<RootState>({
   state: {
+    user: {
+      id: 1,
+      username: 'Maddison Herman',
+      avatarUrl: 'src/assets/pictures/avatar-4.png'
+    },
     currentDiscussion: {
       messages: [
         {

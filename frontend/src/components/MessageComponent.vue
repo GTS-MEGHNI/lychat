@@ -20,8 +20,8 @@ defineProps<Conversation>()
         <span class="text-gray-primary text-[.813rem]">{{ latestMessage.sentAt }}</span>
         <span
           class="flex items-center justify-center bg-primary rounded-full w-4 h-4 text-xs font-bold"
-          >{{ unreadMessagesCount }}</span
-        >
+          >{{ unreadMessagesCount }}
+        </span>
       </div>
     </div>
   </div>

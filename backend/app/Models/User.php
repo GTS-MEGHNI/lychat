@@ -4,10 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @method static find(int $id)
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -42,4 +46,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function conversations(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Conversation::class,
+            UserConversation::class,
+            'user_id',
+            'id',
+            'id',
+            'conversation_id'
+        );
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'avatar' => $this->avatar,
+        ];
+    }
 }

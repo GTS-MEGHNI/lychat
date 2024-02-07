@@ -3,6 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Conversation;
+use App\Models\ConversationMember;
+use App\Models\ConversationMessage;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +16,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $users = User::factory(2)->create();
+        $conversation = Conversation::factory()->create();
+        foreach ($users as $user) {
+            ConversationMember::factory()->create([
+                'user_id' => $user->id,
+                'conversation_id' => $conversation->id,
+            ]);
+            ConversationMessage::factory()->count(5)->create([
+                'user_id' => $user->id,
+                'conversation_id' => $conversation->id,
+            ]);
+        }
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
