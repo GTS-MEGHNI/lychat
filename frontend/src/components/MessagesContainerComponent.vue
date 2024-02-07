@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import SearchInputComponent from '@/components/SearchInputComponent.vue'
-import MessageComponent from '@/components/MessageComponent.vue'
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import SearchInputComponent from '@/components/SearchInputComponent.vue'
+import MessageComponent from '@/components/MessageComponent.vue'
 import type { Conversation } from '@/types/conversation'
 
 let store = null

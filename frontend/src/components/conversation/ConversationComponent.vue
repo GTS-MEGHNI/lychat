@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ConversationMessageComponent from '@/components/conversation/ConversationMessageComponent.vue'
 import SelfMadeMessageComponent from '@/components/conversation/SelfMadeMessageComponent.vue'
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import type { ConversationMessage } from '@/types/conversation'
 import { useStore } from 'vuex'
 
@@ -11,6 +11,11 @@ onBeforeMount(() => {
   let store = useStore()
   discussionMessages = store.getters.getDiscussionMessages
 })
+
+function shouldDisplayInfoChecker(index: number): boolean {
+  let previousMessage: ConversationMessage = discussionMessages[index - 1]
+  return index === 0 ? true : discussionMessages[index].owner.id !== previousMessage.owner.id
+}
 </script>
 
 <template>
@@ -35,6 +40,7 @@ onBeforeMount(() => {
         :owner="discussionMessage.owner"
         :sentAt="discussionMessage.sentAt"
         :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
+        :shouldDisplayInfo="shouldDisplayInfoChecker(index)"
       />
 
       <SelfMadeMessageComponent
@@ -45,6 +51,7 @@ onBeforeMount(() => {
         :owner="discussionMessage.owner"
         :sentAt="discussionMessage.sentAt"
         :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
+        :shouldDisplayInfo="shouldDisplayInfoChecker(index)"
       />
     </div>
   </div>

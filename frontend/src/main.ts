@@ -8,5 +8,4 @@ import store from './store'
 const app = createApp(App).use(store)
 
 app.use(router)
-app.use(store)
 app.mount('#app')

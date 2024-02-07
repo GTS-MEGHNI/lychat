@@ -2,7 +2,11 @@
 import type { ConversationMessage } from '@/types/conversation'
 import { ref } from 'vue'
 
-defineProps<ConversationMessage>()
+interface AdditionProps {
+  shouldDisplayInfo: boolean
+}
+
+defineProps<ConversationMessage & AdditionProps>()
 
 let shouldDisplayInfo = ref<boolean>(true)
 </script>
