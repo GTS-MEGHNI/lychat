@@ -20,7 +20,6 @@ export interface Conversation {
   participants: Array<Participant>
   latestMessage: ConversationMessage
   unreadMessagesCount: number
-  createdAt: Date
   avatarUrl: string
   isGroup: boolean
   isMuted: boolean

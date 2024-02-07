@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property mixed $participants
  * @property mixed $id
  * @property mixed $unread_message_count
+ * @property mixed $users
+ * @property mixed $latestMessage
+ * @property mixed $avatar_url
+ * @property mixed $subscribers
  */
 class Conversation extends Model
 {
@@ -42,26 +46,12 @@ class Conversation extends Model
         return $this->hasMany(ConversationMessage::class);
     }
 
+    /** @noinspection PhpUnused */
     public function latestMessage(): HasOne
     {
-        return $this->hasOne(ConversationMessage::class)->latest();
+        return $this->hasOne(ConversationMessage::class)->latest('id');
     }
 
-    /*
-     * export interface Conversation {
-  id: number | string
-  participants: Array<Participant>
-  latestMessage: ConversationMessage
-  unreadMessagesCount: number
-  createdAt: Date
-  avatarUrl: string
-  isGroup: boolean
-  isMuted: boolean
-  isPinned: boolean
-  isArchived: boolean
-}
-
-     */
     public function toArray(): array
     {
         return [
@@ -69,7 +59,6 @@ class Conversation extends Model
             'participants' => $this->users->toArray(),
             'latestMessage' => $this->latestMessage->toArray(),
             'unreadMessagesCount' => $this->subscribers[0]->number_unread_messages,
-            'createdAt' => $this->created_at,
             'avatarUrl' => $this->avatar_url,
             'isGroup' => $this->subscribers[0]->is_group,
             'isMuted' => $this->subscribers[0]->is_muted,

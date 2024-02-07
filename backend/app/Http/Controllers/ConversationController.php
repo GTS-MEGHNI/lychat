@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ConversationController extends Controller
 {
-    public function list(Request $request, int $id): JsonResponse
+    /** @noinspection PhpUndefinedFieldInspection */
+    public function list(int $userId): JsonResponse
     {
-        return response()->json(User::with(['conversations.subscribers' => function ($query) use ($id) {
-            $query->where(['user_id' => $id]);
-        }])->find($id)->conversations->toArray());
+        return response()->json(User::with(['conversations.subscribers' => function ($query) use ($userId) {
+            $query->where(['user_id' => $userId]);
+        }])->find($userId)->conversations?->toArray());
     }
 }

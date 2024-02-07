@@ -31,7 +31,6 @@ onMounted(() => {
           :participants="conversation.participants"
           :latestMessage="conversation.latestMessage"
           :unreadMessagesCount="conversation.unreadMessagesCount"
-          :createdAt="conversation.createdAt"
           :avatarUrl="conversation.avatarUrl"
           :isGroup="conversation.isGroup"
           :isMuted="conversation.isGroup"

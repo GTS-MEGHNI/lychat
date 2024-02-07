@@ -5,16 +5,16 @@ import { onBeforeMount, ref } from 'vue'
 import type { ConversationMessage } from '@/types/conversation'
 import { useStore } from 'vuex'
 
-let discussionMessages = ref < Array<ConversationMessage>([])
+let discussionMessages = ref<Array<ConversationMessage>>([])
 
 onBeforeMount(() => {
   let store = useStore()
-  discussionMessages = store.getters.getDiscussionMessages
+  discussionMessages.value = store.getters.getDiscussionMessages
 })
 
 function shouldDisplayInfoChecker(index: number): boolean {
-  let previousMessage: ConversationMessage = discussionMessages[index - 1]
-  return index === 0 ? true : discussionMessages[index].owner.id !== previousMessage.owner.id
+  let previousMessage: ConversationMessage = discussionMessages.value[index - 1]
+  return index === 0 ? true : discussionMessages.value[index].owner.id !== previousMessage.owner.id
 }
 </script>
 

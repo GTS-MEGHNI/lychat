@@ -79,7 +79,6 @@ export default createStore<RootState>({
           isCurrentUserMessage: true
         },
         unreadMessagesCount: 10,
-        createdAt: new Date(),
         avatarUrl: 'src/assets/pictures/avatar-1.png',
         isGroup: false,
         isMuted: false,
