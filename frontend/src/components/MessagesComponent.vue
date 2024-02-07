@@ -3,14 +3,14 @@ import SearchInputComponent from '@/components/SearchInputComponent.vue'
 import MessageComponent from '@/components/MessageComponent.vue'
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import type { Message } from '@/types/message'
+import type { Conversation } from '@/types/conversation'
 
 let store = null
-let messages = ref<Array<Message>>([])
+let conversations = ref<Array<Conversation>>([])
 
 onMounted(() => {
   store = useStore()
-  messages.value = store.getters.getMessages
+  conversations.value = store.getters.getConversations
 })
 </script>
 
@@ -25,8 +25,19 @@ onMounted(() => {
       <SearchInputComponent placeholder="search" iconPosition="START" />
     </div>
     <div class="flex flex-col gap-[1.875rem]">
-      <div v-for="(message, index) in messages" :key="index">
-        <MessageComponent :avatarUrl="message.avatarUrl" :fullName="message.fullName" />
+      <div v-for="(conversation, index) in conversations" :key="index">
+        <MessageComponent
+          :id="conversation.id"
+          :participants="conversation.participants"
+          :latestMessage="conversation.latestMessage"
+          :unreadMessagesCount="conversation.unreadMessagesCount"
+          :createdAt="conversation.createdAt"
+          :avatarUrl="conversation.avatarUrl"
+          :isGroup="conversation.isGroup"
+          :isMuted="conversation.isGroup"
+          :isPinned="conversation.isPinned"
+          :isArchived="conversation.isArchived"
+        />
       </div>
     </div>
   </div>

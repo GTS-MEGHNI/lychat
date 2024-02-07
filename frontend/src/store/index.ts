@@ -1,54 +1,47 @@
 import { createStore } from 'vuex'
 import type { RootState } from '@/types/state'
-import type { Message } from '@/types/message'
+import type { Conversation } from '@/types/conversation'
 
 export default createStore<RootState>({
   state: {
-    messages: [
+    conversations: [
       {
         id: 1,
+        participants: [
+          {
+            id: 1,
+            username: 'Killian James',
+            avatarUrl: 'src/assets/pictures/avatar-1.png'
+          },
+          {
+            id: 1,
+            username: 'Mohamed El Amine',
+            avatarUrl: 'src/assets/pictures/avatar-1.png'
+          }
+        ],
+        latestMessage: {
+          id: 1,
+          type: 'TEXT',
+          content: 'This is a message',
+          owner: {
+            id: 1,
+            username: 'Killian James',
+            avatarUrl: 'src/assets/pictures/avatar-1.png'
+          },
+          sentAt: '04:30 PM'
+        },
+        unreadMessagesCount: 10,
+        createdAt: new Date(),
         avatarUrl: 'src/assets/pictures/avatar-1.png',
-        fullName: 'Killian James',
-        contentType: 'TEXT',
-        content: 'Hello everyone !',
-        sentAt: '04:30 AM'
-      },
-      {
-        id: 2,
-        avatarUrl: 'src/assets/pictures/avatar-2.png',
-        fullName: 'Emily Johnson',
-        contentType: 'TEXT',
-        content: 'Hello everyone !',
-        sentAt: '04:30 AM'
-      },
-      {
-        id: 3,
-        avatarUrl: 'src/assets/pictures/avatar-3.png',
-        fullName: 'Sophia Rodriguez',
-        contentType: 'TEXT',
-        content: 'Hello everyone !',
-        sentAt: '04:30 AM'
-      },
-      {
-        id: 4,
-        avatarUrl: 'src/assets/pictures/avatar-4.png',
-        fullName: 'Olivia Smith',
-        contentType: 'TEXT',
-        content: 'Hello everyone !',
-        sentAt: '04:30 AM'
-      },
-      {
-        id: 5,
-        avatarUrl: 'src/assets/pictures/avatar-5.png',
-        fullName: 'Benjamin Williams',
-        contentType: 'TEXT',
-        content: 'Hello everyone !',
-        sentAt: '04:30 AM'
+        isGroup: false,
+        isMuted: false,
+        isPinned: false,
+        isArchived: false
       }
     ]
   },
   getters: {
-    getMessages: (state: RootState): Array<Message> => state.messages
+    getConversations: (state: RootState): Array<Conversation> => state.conversations
   },
   mutations: {},
   actions: {},

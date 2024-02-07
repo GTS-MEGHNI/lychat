@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
+import type { Conversation } from '@/types/conversation'
 
-defineProps<{
-  avatarUrl: string
-  fullName: string
-}>()
+defineProps<Conversation>()
 </script>
 
 <template>
@@ -14,15 +12,15 @@ defineProps<{
     </div>
     <div class="flex justify-between w-full">
       <div class="flex flex-col ml-[.938rem]">
-        <span class="text-soft font-bold">{{ fullName }}</span>
+        <span class="text-soft font-bold">{{ latestMessage.owner.username }}</span>
         <!--        <span class="text-sm text-green">Typing...</span>-->
-        <span class="text-gray-primary text-sm">Hello everyone !</span>
+        <span class="text-gray-primary text-sm">{{ latestMessage.content }}</span>
       </div>
       <div class="flex flex-col items-end">
-        <span class="text-gray-primary text-[.813rem]">4:30 PM</span>
+        <span class="text-gray-primary text-[.813rem]">{{ latestMessage.sentAt }}</span>
         <span
           class="flex items-center justify-center bg-primary rounded-full w-4 h-4 text-xs font-bold"
-          >2</span
+          >{{ unreadMessagesCount }}</span
         >
       </div>
     </div>

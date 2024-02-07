@@ -1,4 +1,4 @@
-import type { Message } from '@/types/message'
+import type { Conversation } from '@/types/conversation'
 export interface RootState {
-  messages: Array<Message>
+  conversations: Array<Conversation>
 }
