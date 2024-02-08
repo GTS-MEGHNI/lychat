@@ -3,6 +3,15 @@ import SideBarComponent from '@/components/SideBarComponent.vue'
 import ConversationComponent from '@/components/conversation/ConversationComponent.vue'
 import MessageInputComponent from '@/components/MessageInputComponent.vue'
 import MessagesContainerComponent from '@/components/MessagesContainerComponent.vue'
+import { type Ref, ref } from 'vue'
+
+const conversationRef: Ref<HTMLDivElement | undefined> = ref(undefined)
+
+  function scrollConversationToBottom() {
+    if (conversationRef.value) {
+      conversationRef.value.scrollTop = conversationRef.value.scrollHeight;
+    }
+  }
 </script>
 
 <template>
@@ -11,8 +20,8 @@ import MessagesContainerComponent from '@/components/MessagesContainerComponent.
     <div class="flex h-full">
       <MessagesContainerComponent />
       <div class="flex flex-col w-full justify-between">
-        <ConversationComponent />
-        <MessageInputComponent />
+        <ConversationComponent ref="conversationRef"/>
+        <MessageInputComponent @messageSent="scrollConversationToBottom" />
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ConversationMessageComponent from '@/components/conversation/ConversationMessageComponent.vue'
 import SelfMadeMessageComponent from '@/components/conversation/SelfMadeMessageComponent.vue'
-import { onBeforeMount, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, onUpdated, ref } from 'vue'
 import type { ConversationMessage } from '@/types/conversation'
 import { useStore } from 'vuex'
 import type { Discussion } from '@/types/Discussion'
@@ -9,19 +9,24 @@ import store from '@/store'
 
 let currentDiscussion = ref<Discussion | {}>({})
 let discussionMessages = ref<Array<ConversationMessage>>([])
+let messagesContainer = ref()
 let currentDiscussionWatcher: ReturnType<typeof store.watch> = () => {
 }
 
-onBeforeMount(() => {
+onMounted(() => {
   let store = useStore()
   currentDiscussionWatcher = store.watch(
     () => store.getters.getCurrentDiscussion,
     (discussion: Discussion) => {
       currentDiscussion.value = discussion
       discussionMessages.value = discussion.messages
-    }
-  )
+    })
 })
+
+onUpdated(() => {
+  messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+})
+
 
 onUnmounted(currentDiscussionWatcher)
 
@@ -34,8 +39,8 @@ function shouldDisplayInfoChecker(index: number): boolean {
 
 <template>
   <div
-    class="overflow-y-scroll overflow-x-hidden bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem] mb-4"
-  >
+    ref="messagesContainer"
+    class="overflow-y-scroll overflow-x-hidden bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem] mb-4">
     <div v-if="Object.keys(currentDiscussion).length !== 0">
       <div class="flex items-center text-soft mb-[3.75rem]">
         <div class="w-[3.75rem] sh-[3.75rem] mr-[1.125rem]">
@@ -47,6 +52,7 @@ function shouldDisplayInfoChecker(index: number): boolean {
         </div>
       </div>
       <div v-for="(discussionMessage, index) in discussionMessages" :key="index">
+
         <ConversationMessageComponent
           v-if="!discussionMessage.isCurrentUserMessage"
           :id="discussionMessage.id"
@@ -68,6 +74,7 @@ function shouldDisplayInfoChecker(index: number): boolean {
           :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
           :shouldDisplayInfo="shouldDisplayInfoChecker(index)"
         />
+
       </div>
     </div>
   </div>

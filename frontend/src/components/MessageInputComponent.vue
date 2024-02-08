@@ -1,7 +1,39 @@
 <script setup lang="ts">
-// ml-[calc(350px)]
+
+import { getCurrentInstance, onMounted, ref } from 'vue'
+import { Store, useStore } from 'vuex'
+import { MessageSenderService } from '@/services/MessageSenderService'
+
+let input = ref<string>('')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let store: Store<any>
+let instance : ReturnType<typeof getCurrentInstance> = null
+
+onMounted(() => {
+  store = useStore()
+  instance = getCurrentInstance()
+  window.addEventListener('keydown', handleKeyPress)
+})
+
+
+function sendMessage() {
+  if(input.value !== '') {
+    MessageSenderService.send(input.value)
+    if(instance !== null)
+      instance.emit('messageSent')
+    input.value = ''
+  }
+}
+
+function handleKeyPress(event:any) {
+  if(event.keyCode === 13)
+    sendMessage()
+}
+
+
+
+
 </script>
-<!--<div class="absolute bottom-0 ml-[calc(20.95rem)] w-[calc(100%-5.875rem-22.033rem)] justify-center items-center flex min-h-[5.625rem] bg-dark-type">-->
 
 <template>
   <div class="justify-center items-center flex bg-dark-type py-[1.188rem]">
@@ -17,6 +49,7 @@
             class="w-full bg-transparent outline-none text-soft"
             type="text"
             placeholder="Aa"
+            v-model="input"
           />
         </div>
       </div>
@@ -28,7 +61,7 @@
           <img src="../assets/icons/emojis.svg" alt="" />
         </div>
         <div>
-          <img src="../assets/icons/send.svg" alt="" />
+          <button @click="sendMessage"><img src="../assets/icons/send.svg" alt="" /></button>
         </div>
         <div>
           <img src="../assets/icons/location.svg" alt="" />

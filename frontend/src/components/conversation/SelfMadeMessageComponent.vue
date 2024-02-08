@@ -16,7 +16,7 @@ defineProps<ConversationMessage & AdditionProps>()
         <span class="text-gray-primary text-[.813rem]">{{ sentAt }}</span>
         <span class="text-soft font-bold ml-[.375rem]">{{ owner.username }}</span>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center justify-end">
         <div
           :class="
             shouldDisplayInfo
