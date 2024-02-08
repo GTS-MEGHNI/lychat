@@ -26,6 +26,6 @@ class ConversationController extends Controller
     {
         $service->addMessage($request->validated(), $user, $conversation);
 
-        return response()->json(new ConversationMessageResource($service->getCreatedMessage()));
+        return response()->json(new ConversationMessageResource($service->getCreatedMessage()), 201);
     }
 }

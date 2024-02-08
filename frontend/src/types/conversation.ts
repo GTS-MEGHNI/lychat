@@ -15,6 +15,10 @@ export interface ConversationMessage {
   isCurrentUserMessage: boolean
 }
 
+export interface DispatchedConversationMessage extends ConversationMessage {
+  oldId: string
+}
+
 export interface Conversation {
   id: number | string
   participants: Array<Participant>

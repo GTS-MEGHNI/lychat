@@ -1,6 +1,11 @@
 import { ActionContext, createStore } from 'vuex'
 import type { RootState } from '@/types/state'
-import type { Conversation, ConversationMessage, Participant } from '@/types/conversation'
+import type {
+  Conversation,
+  ConversationMessage,
+  DispatchedConversationMessage,
+  Participant
+} from '@/types/conversation'
 import type { Discussion } from '@/types/Discussion'
 
 export default createStore<RootState>({
@@ -23,7 +28,12 @@ export default createStore<RootState>({
     setConversations: (state: RootState, payload: Array<Conversation>) =>
       (state.conversations = payload),
     setCurrentDiscussion: (state: RootState, payload: Discussion) => state.currentDiscussion = payload,
-    appendMessage: (state: RootState, payload: ConversationMessage) => (state.currentDiscussion as Discussion).messages.push(payload)
+    appendMessage: (state: RootState, payload: ConversationMessage) => (state.currentDiscussion as Discussion).messages.push(payload),
+    updateMessageId: (state: RootState, payload: DispatchedConversationMessage) => {
+      const messages: ConversationMessage[] = (state.currentDiscussion as Discussion).messages
+      const index = messages.findIndex((message: ConversationMessage) => message.id === payload.oldId)
+      messages[index].id = payload.id
+    }
   },
   actions: {
     conversationsFetched: (
@@ -40,6 +50,9 @@ export default createStore<RootState>({
     },
     messageCreated: (state: ActionContext<RootState, RootState>, payload: ConversationMessage) => {
       state.commit('appendMessage', payload)
+    },
+    messageStored: (state: ActionContext<RootState, RootState>, payload: DispatchedConversationMessage) => {
+      state.commit('updateMessageId', payload)
     }
   },
   modules: {}
