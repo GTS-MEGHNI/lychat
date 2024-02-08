@@ -11,6 +11,7 @@ export class MessageSenderService {
   static send(content: string) {
     this.reshapedMessage = this.reshapeMessage(content)
     store.dispatch('messageCreated', this.reshapedMessage).then(() => {
+      this.playSendSound()
       this.sendMessageToApi()
     })
   }
@@ -24,7 +25,7 @@ export class MessageSenderService {
       store.dispatch('messageStored', {
         ...apiResponse,
         oldId: this.reshapedMessage.id
-      })
+      }).then()
     })
   }
 
@@ -38,6 +39,11 @@ export class MessageSenderService {
       sentAt: '04:00 PM',
       isCurrentUserMessage: true
     }
+  }
+
+  static playSendSound() {
+    const audio = new Audio('src/assets/sound/send-message-sound.mp3')
+    audio.play().then()
   }
 
 }
