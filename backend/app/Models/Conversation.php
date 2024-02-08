@@ -39,7 +39,7 @@ class Conversation extends Model
 
     public function messages(): HasMany
     {
-        return $this->hasMany(ConversationMessage::class);
+        return $this->hasMany(ConversationMessage::class)->oldest('id');
     }
 
     /** @noinspection PhpUnused */
@@ -48,13 +48,14 @@ class Conversation extends Model
         return $this->hasOne(ConversationMessage::class)->latest('id');
     }
 
+    /** @noinspection PhpUnused */
     public function avatarUrl(): Attribute
     {
         return new Attribute(
             get: function () {
                 if ($this->users->count() == 2) {
                     return $this->users->where('id', '!=', Utility::getUserId())->first()->avatar;
-                }
+                } else return null;
             }
         );
     }

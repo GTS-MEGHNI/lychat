@@ -14,6 +14,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed $latestMessage
  * @property mixed $avatar_url
  * @property mixed $subscribers
+ * @property mixed $messages
  */
 class ConversationResource extends JsonResource
 {
@@ -34,6 +35,14 @@ class ConversationResource extends JsonResource
             'isMuted' => $this->subscribers[0]->is_muted,
             'isPinned' => $this->subscribers[0]->is_pinned,
             'isArchived' => $this->subscribers[0]->is_archived,
+        ];
+    }
+
+    public function toArrayWithMessages(): array
+    {
+        return [
+            ...$this->toArray(request()),
+            'messages' => ConversationMessageResource::collection($this->messages)
         ];
     }
 }
