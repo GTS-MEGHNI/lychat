@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import { ActionContext, createStore } from 'vuex'
 import type { RootState } from '@/types/state'
 import type { Conversation, ConversationMessage } from '@/types/conversation'
 
@@ -51,48 +51,24 @@ export default createStore<RootState>({
         }
       ]
     },
-    conversations: [
-      {
-        id: 1,
-        participants: [
-          {
-            id: 1,
-            username: 'Killian James',
-            avatarUrl: 'src/assets/pictures/avatar-1.png'
-          },
-          {
-            id: 1,
-            username: 'Mohamed El Amine',
-            avatarUrl: 'src/assets/pictures/avatar-1.png'
-          }
-        ],
-        latestMessage: {
-          id: 1,
-          type: 'TEXT',
-          content: 'This is a message',
-          owner: {
-            id: 1,
-            username: 'Killian James',
-            avatarUrl: 'src/assets/pictures/avatar-1.png'
-          },
-          sentAt: '04:30 PM',
-          isCurrentUserMessage: true
-        },
-        unreadMessagesCount: 10,
-        avatarUrl: 'src/assets/pictures/avatar-1.png',
-        isGroup: false,
-        isMuted: false,
-        isPinned: false,
-        isArchived: false
-      }
-    ]
+    conversations: []
   },
   getters: {
     getConversations: (state: RootState): Array<Conversation> => state.conversations,
     getDiscussionMessages: (state: RootState): Array<ConversationMessage> | [] =>
       state.currentDiscussion ? state.currentDiscussion.messages : []
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    setConversations: (state: RootState, payload: Array<Conversation>) =>
+      (state.conversations = payload)
+  },
+  actions: {
+    conversationsFetched: (
+      state: ActionContext<RootState, RootState>,
+      payload: Array<Conversation>
+    ) => {
+      state.commit('setConversations', payload)
+    }
+  },
   modules: {}
 })

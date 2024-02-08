@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Utility;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property mixed $subscribers
+ * @property mixed $users
+ */
 class Conversation extends Model
 {
     use HasFactory;
@@ -40,5 +46,16 @@ class Conversation extends Model
     public function latestMessage(): HasOne
     {
         return $this->hasOne(ConversationMessage::class)->latest('id');
+    }
+
+    public function avatarUrl(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+                if ($this->users->count() == 2) {
+                    return $this->users->where('id', '!=', Utility::getUserId())->first()->avatar;
+                }
+            }
+        );
     }
 }

@@ -16,15 +16,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::factory(2)->create();
-        $conversation = Conversation::factory()->create();
-        foreach ($users as $user) {
+        $users = User::factory()->count(10)->create();
+        $conversations = Conversation::factory()->count(10)->create();
+        foreach ($conversations as $conversation) {
+            $randomUserId = User::where('id', '!=', 1)->inRandomOrder()->first()->id;
             ConversationMember::factory()->create([
-                'user_id' => $user->id,
+                'user_id' => 1,
+                'conversation_id' => $conversation->id,
+            ]);
+            ConversationMember::factory()->create([
+                'user_id' => $randomUserId,
                 'conversation_id' => $conversation->id,
             ]);
             ConversationMessage::factory()->count(5)->create([
-                'user_id' => $user->id,
+                'user_id' => 1,
+                'conversation_id' => $conversation->id,
+            ]);
+            ConversationMessage::factory()->count(5)->create([
+                'user_id' => $randomUserId,
                 'conversation_id' => $conversation->id,
             ]);
         }

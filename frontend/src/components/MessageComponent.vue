@@ -11,10 +11,14 @@ defineProps<Conversation>()
       <img class="w-[50px] h-[50px]" :src="avatarUrl" alt="" />
     </div>
     <div class="flex justify-between w-full">
-      <div class="flex flex-col ml-[.938rem]">
-        <span class="text-soft font-bold">{{ latestMessage.owner.username }}</span>
+      <div class="flex flex-col ml-[.938rem] max-w-[9.375rem]">
+        <span class="overflow-hidden text-ellipsis text-nowrap text-soft font-bold">{{
+          latestMessage.owner.username
+        }}</span>
         <!--        <span class="text-sm text-green">Typing...</span>-->
-        <span class="text-gray-primary text-sm">{{ latestMessage.content }}</span>
+        <span class="overflow-hidden text-ellipsis text-nowrap text-gray-primary text-sm">{{
+          latestMessage.content
+        }}</span>
       </div>
       <div class="flex flex-col items-end">
         <span class="text-gray-primary text-[.813rem]">{{ latestMessage.sentAt }}</span>
