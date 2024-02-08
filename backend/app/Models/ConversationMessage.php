@@ -13,12 +13,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property mixed $owner
+ *
+ * @method static create(array $array)
  */
 class ConversationMessage extends Model
 {
     use HasFactory;
 
     protected $table = 'conversation_messages';
+
+    protected $fillable = [
+        'content_type',
+        'content',
+        'user_id',
+        'conversation_id',
+    ];
+
+    public function conversation(): BelongsTo
+    {
+        return $this->belongsTo(Conversation::class);
+    }
 
     public function owner(): BelongsTo
     {

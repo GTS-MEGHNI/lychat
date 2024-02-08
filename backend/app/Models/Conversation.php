@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * @property mixed $subscribers
  * @property mixed $users
+ * @property mixed $messages
+ * @property mixed $id
  */
 class Conversation extends Model
 {
