@@ -3,5 +3,5 @@ import type { Discussion } from '@/types/Discussion'
 export interface RootState {
   user: Participant
   conversations: Array<Conversation>
-  currentDiscussion: Discussion | null
+  currentDiscussion: Discussion | {}
 }

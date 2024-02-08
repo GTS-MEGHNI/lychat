@@ -1,16 +1,30 @@
 <script setup lang="ts">
 import ConversationMessageComponent from '@/components/conversation/ConversationMessageComponent.vue'
 import SelfMadeMessageComponent from '@/components/conversation/SelfMadeMessageComponent.vue'
-import { onBeforeMount, ref } from 'vue'
+import { onBeforeMount, onUnmounted, ref } from 'vue'
 import type { ConversationMessage } from '@/types/conversation'
 import { useStore } from 'vuex'
+import type { Discussion } from '@/types/Discussion'
+import store from '@/store'
 
+let currentDiscussion = ref<Discussion | {}>({})
 let discussionMessages = ref<Array<ConversationMessage>>([])
+let currentDiscussionWatcher: ReturnType<typeof store.watch> = () => {
+}
 
 onBeforeMount(() => {
   let store = useStore()
-  discussionMessages.value = store.getters.getDiscussionMessages
+  currentDiscussionWatcher = store.watch(
+    () => store.getters.getCurrentDiscussion,
+    (discussion: Discussion) => {
+      currentDiscussion.value = discussion
+      discussionMessages.value = discussion.messages
+    }
+  )
 })
+
+onUnmounted(currentDiscussionWatcher)
+
 
 function shouldDisplayInfoChecker(index: number): boolean {
   let previousMessage: ConversationMessage = discussionMessages.value[index - 1]
@@ -22,37 +36,39 @@ function shouldDisplayInfoChecker(index: number): boolean {
   <div
     class="overflow-y-scroll overflow-x-hidden bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem] mb-4"
   >
-    <div class="flex items-center text-soft mb-[3.75rem]">
-      <div class="min-w-[3.75rem] min-h-[3.75rem] mr-[1.125rem]">
-        <img src="../../assets/pictures/avatar-7.png" alt="" />
+    <div v-if="Object.keys(currentDiscussion).length !== 0">
+      <div class="flex items-center text-soft mb-[3.75rem]">
+        <div class="w-[3.75rem] sh-[3.75rem] mr-[1.125rem]">
+          <img :src="(currentDiscussion as Discussion).avatarUrl" alt="" />
+        </div>
+        <div class="flex flex-col">
+          <span class="text-3xl">{{ (currentDiscussion as Discussion).title }}</span>
+          <span class="text-gray-primary text-sm">Active now</span>
+        </div>
       </div>
-      <div class="flex flex-col">
-        <span class="text-3xl">Alexander Thompson</span>
-        <span class="text-gray-primary text-sm">Active 4h ago</span>
-      </div>
-    </div>
-    <div v-for="(discussionMessage, index) in discussionMessages" :key="index">
-      <ConversationMessageComponent
-        v-if="!discussionMessage.isCurrentUserMessage"
-        :id="discussionMessage.id"
-        :type="discussionMessage.type"
-        :content="discussionMessage.content"
-        :owner="discussionMessage.owner"
-        :sentAt="discussionMessage.sentAt"
-        :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
-        :shouldDisplayInfo="shouldDisplayInfoChecker(index)"
-      />
+      <div v-for="(discussionMessage, index) in discussionMessages" :key="index">
+        <ConversationMessageComponent
+          v-if="!discussionMessage.isCurrentUserMessage"
+          :id="discussionMessage.id"
+          :type="discussionMessage.type"
+          :content="discussionMessage.content"
+          :owner="discussionMessage.owner"
+          :sentAt="discussionMessage.sentAt"
+          :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
+          :shouldDisplayInfo="shouldDisplayInfoChecker(index)"
+        />
 
-      <SelfMadeMessageComponent
-        v-else
-        :id="discussionMessage.id"
-        :type="discussionMessage.type"
-        :content="discussionMessage.content"
-        :owner="discussionMessage.owner"
-        :sentAt="discussionMessage.sentAt"
-        :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
-        :shouldDisplayInfo="shouldDisplayInfoChecker(index)"
-      />
+        <SelfMadeMessageComponent
+          v-else
+          :id="discussionMessage.id"
+          :type="discussionMessage.type"
+          :content="discussionMessage.content"
+          :owner="discussionMessage.owner"
+          :sentAt="discussionMessage.sentAt"
+          :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
+          :shouldDisplayInfo="shouldDisplayInfoChecker(index)"
+        />
+      </div>
     </div>
   </div>
 </template>

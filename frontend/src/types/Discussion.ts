@@ -1,5 +1,6 @@
-import type { ConversationMessage } from '@/types/conversation'
+import type { Conversation, ConversationMessage } from '@/types/conversation'
 
-export interface Discussion {
-  messages: Array<ConversationMessage>
+export interface Discussion extends Conversation {
+  messages: Array<ConversationMessage>,
+  title:string
 }

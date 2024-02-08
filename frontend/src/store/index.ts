@@ -1,66 +1,27 @@
 import { ActionContext, createStore } from 'vuex'
 import type { RootState } from '@/types/state'
-import type { Conversation, ConversationMessage } from '@/types/conversation'
+import type { Conversation } from '@/types/conversation'
+import type { Discussion } from '@/types/Discussion'
 
 export default createStore<RootState>({
   state: {
     user: {
       id: 1,
-      username: 'Maddison Herman',
+      username: 'Mohamed El Amine',
       avatarUrl: 'src/assets/pictures/avatar-4.png'
     },
-    currentDiscussion: {
-      messages: [
-        {
-          id: 1,
-          type: 'TEXT',
-          content: 'This is a message',
-          owner: {
-            id: 1,
-            username: 'Olivia Smith',
-            avatarUrl: 'src/assets/pictures/avatar-4.png'
-          },
-          sentAt: '12:30 AM',
-          isCurrentUserMessage: false
-        },
-        {
-          id: 1,
-          type: 'IMAGE',
-          content:
-            'https://wallpapersmug.com/download/2560x1440/c1284b/moraine-lake-banff-national-park.jpg',
-          owner: {
-            id: 1,
-            username: 'Olivia Smith',
-            avatarUrl: 'src/assets/pictures/avatar-4.png'
-          },
-          sentAt: '12:30 AM',
-          isCurrentUserMessage: false
-        },
-        {
-          id: 1,
-          type: 'IMAGE',
-          content:
-            'https://wallpapersmug.com/download/2560x1440/c1284b/moraine-lake-banff-national-park.jpg',
-          owner: {
-            id: 999,
-            username: 'Olivia Smith',
-            avatarUrl: 'src/assets/pictures/avatar-4.png'
-          },
-          sentAt: '12:30 AM',
-          isCurrentUserMessage: true
-        }
-      ]
-    },
+    currentDiscussion: {},
     conversations: []
   },
   getters: {
     getConversations: (state: RootState): Array<Conversation> => state.conversations,
-    getDiscussionMessages: (state: RootState): Array<ConversationMessage> | [] =>
-      state.currentDiscussion ? state.currentDiscussion.messages : []
+    getCurrentDiscussion: (state: RootState): Discussion|{} => state.currentDiscussion,
+    getUserId: (state: RootState) => state.user.id
   },
   mutations: {
     setConversations: (state: RootState, payload: Array<Conversation>) =>
-      (state.conversations = payload)
+      (state.conversations = payload),
+    setCurrentDiscussion: (state: RootState, payload: Discussion) => state.currentDiscussion = payload
   },
   actions: {
     conversationsFetched: (
@@ -68,7 +29,13 @@ export default createStore<RootState>({
       payload: Array<Conversation>
     ) => {
       state.commit('setConversations', payload)
-    }
+    },
+    conversationFetched: (
+      state: ActionContext<RootState, RootState>,
+      payload: Discussion
+    ) => {
+      state.commit('setCurrentDiscussion', payload)
+    },
   },
   modules: {}
 })

@@ -16,4 +16,3 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('users/{user}/conversations', [ConversationController::class, 'list']);
 Route::get('users/{user}/conversations/{conversation}', [ConversationController::class, 'get']);
-

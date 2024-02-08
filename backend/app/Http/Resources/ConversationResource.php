@@ -15,6 +15,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed $avatar_url
  * @property mixed $subscribers
  * @property mixed $messages
+ * @property mixed $title
  */
 class ConversationResource extends JsonResource
 {
@@ -42,7 +43,8 @@ class ConversationResource extends JsonResource
     {
         return [
             ...$this->toArray(request()),
-            'messages' => ConversationMessageResource::collection($this->messages)
+            'messages' => ConversationMessageResource::collection($this->messages),
+            'title' => $this->title,
         ];
     }
 }

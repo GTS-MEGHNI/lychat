@@ -55,7 +55,22 @@ class Conversation extends Model
             get: function () {
                 if ($this->users->count() == 2) {
                     return $this->users->where('id', '!=', Utility::getUserId())->first()->avatar;
-                } else return null;
+                } else {
+                    return null;
+                }
+            }
+        );
+    }
+
+    public function title(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+                if ($this->users->count() == 2) {
+                    return $this->users->where('id', '!=', Utility::getUserId())->first()->username;
+                } else {
+                    return null;
+                }
             }
         );
     }
