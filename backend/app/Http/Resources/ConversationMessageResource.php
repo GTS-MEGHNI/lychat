@@ -31,4 +31,6 @@ class ConversationMessageResource extends JsonResource
             'isCurrentUserMessage' => $this->is_current_user_message,
         ];
     }
+
+
 }

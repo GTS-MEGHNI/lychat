@@ -13,17 +13,17 @@ class MessageCreated implements ShouldBroadcast
 
     public array $conversationMessage;
 
-    public int $conversation_id;
+    public int $conversationId;
 
-    public function __construct(array $conversationMessage, int $conversation_id)
+    public function __construct(array $conversationMessage, int $conversationId)
     {
         $this->conversationMessage = $conversationMessage;
-        $this->conversation_id = $conversation_id;
+        $this->conversationId = $conversationId;
     }
 
     public function broadcastOn(): array
     {
-        return ['conversation-'.$this->conversation_id];
+        return ['conversation-'.$this->conversationId];
     }
 
     /** @noinspection PhpUnused */

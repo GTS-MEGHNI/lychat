@@ -19,6 +19,11 @@ export interface DispatchedConversationMessage extends ConversationMessage {
   oldId: string
 }
 
+export interface ReceivedConversationMessage {
+  conversationMessage: ConversationMessage
+  conversationId: number
+}
+
 export interface Conversation {
   id: number | string
   participants: Array<Participant>
