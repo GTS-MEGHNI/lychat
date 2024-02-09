@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property mixed $owner
+ * @property mixed $conversation
  *
  * @method static create(array $array)
  */
