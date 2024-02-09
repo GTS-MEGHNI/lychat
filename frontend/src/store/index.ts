@@ -37,6 +37,10 @@ export default createStore<RootState>({
         (message: ConversationMessage) => message.id === payload.oldId
       )
       messages[index].id = payload.id
+    },
+
+    updateUserData: (state: RootState, payload: Participant) => {
+      state.user = { ... payload }
     }
   },
   actions: {
@@ -72,6 +76,10 @@ export default createStore<RootState>({
       if (payload.conversationId === (state.getters.getCurrentDiscussion as Discussion).id) {
         state.commit('appendMessageInCurrentDiscussion', payload.conversationMessage)
       }
+    },
+
+    userLogged: (state: ActionContext<RootState, RootState>, payload: Participant) => {
+      state.commit('updateUserData', payload)
     }
   },
   modules: {}

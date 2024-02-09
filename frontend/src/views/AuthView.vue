@@ -1,4 +1,19 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+import { ref } from 'vue'
+import { LoginService } from '@/services/LoginService'
+
+
+
+let email = ref<string>('')
+let password = ref<string>('')
+
+function login() {
+  LoginService.login({email: email.value, password:password.value})
+}
+
+
+</script>
 
 <template>
   <div class="max-w-[1600px] mx-auto items-center flex text-soft w-full h-full">
@@ -6,7 +21,7 @@
       <div class="flex items-center gap-[.75rem]">
         <h1 class="font-bold text-5xl tracking-wider">Lychat</h1>
         <span class="bg-primary rounded-[.313rem] py-[.563rem] px-[.75rem] font-semibold"
-          >Open source</span
+        >Open source</span
         >
       </div>
       <hr class="w-[6.625rem]" />
@@ -31,6 +46,7 @@
           <div class="pl-[1.25rem] flex gap-[1.875rem] w-full outline-none bg-dark-accent">
             <img src="../assets/icons/mail.svg" alt="" />
             <input
+              v-model="email"
               class="w-full py-[1.375rem] bg-transparent outline-none"
               type="text"
               placeholder="douglas@gmail.com"
@@ -39,6 +55,7 @@
           <div class="pl-[1.25rem] flex gap-[1.875rem] w-full outline-none bg-dark-accent">
             <img src="../assets/icons/lock.svg" alt="" />
             <input
+              v-model="password"
               class="w-full py-[1.375rem] bg-transparent outline-none"
               type="password"
               placeholder="***********************"
@@ -51,7 +68,7 @@
           <p>Remember me</p>
         </div>
         <div class="w-full">
-          <button class="rounded-md w-full bg-primary py-[1.375rem]">Login</button>
+          <button @click="login" class="rounded-md w-full bg-primary py-[1.375rem]">Login</button>
         </div>
       </div>
     </div>

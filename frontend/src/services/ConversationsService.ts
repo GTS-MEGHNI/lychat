@@ -5,22 +5,22 @@ import type { Conversation, ReceivedConversationMessage } from '@/types/conversa
 import Pusher, { Channel } from 'pusher-js'
 
 export class ConversationsService {
-  private static userId: number = store.getters.getUserId
 
   static async fetchConversations(): Promise<void> {
+    const userId: number|string = store.getters.getUserId
     return axios
-      .get(`http://127.0.0.1:8000/api/users/${this.userId}/conversations`)
+      .get(`http://127.0.0.1:8000/api/users/${userId}/conversations`)
       .then((response) => {
         store.dispatch('conversationsFetched', response.data as Conversation[]).then()
-        this.loadConversation(response.data[0].id as number)
+        this.loadConversation(response.data[0].id as number, userId)
         this.listenToPusherEvents(response.data as Conversation[])
       })
   }
 
-  static async loadConversation(conversationId: number): Promise<void> {
+  static async loadConversation(conversationId: number, userId: number|string): Promise<void> {
     if ((store.getters.getCurrentDiscussion as Discussion).id !== conversationId) {
       return axios
-        .get(`http://127.0.0.1:8000/api/users/${this.userId}/conversations/${conversationId}`)
+        .get(`http://127.0.0.1:8000/api/users/${userId}/conversations/${conversationId}`)
         .then((response) => {
           store.dispatch('conversationFetched', response.data).then()
         })

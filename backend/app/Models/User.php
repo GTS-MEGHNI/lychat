@@ -11,13 +11,21 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @method static find(int $id)
  * @method static where(string $string, string $string1, int $int)
  * @method static count()
+ * @method static findByEmail(string $email)
  *
  * @property mixed $conversations
  * @property mixed $id
+ * @property mixed $password
  */
 class User extends Model
 {
     use HasFactory;
+
+    /** @noinspection PhpUnused */
+    public function scopeFindByEmail(mixed $query, string $email)
+    {
+        return $query->where(['email' => $email])->first();
+    }
 
     public function conversations(): HasManyThrough
     {
