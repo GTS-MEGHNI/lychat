@@ -12,12 +12,13 @@ export class ConversationsService {
       .get(`http://127.0.0.1:8000/api/users/${userId}/conversations`)
       .then((response) => {
         store.dispatch('conversationsFetched', response.data as Conversation[]).then()
-        this.loadConversation(response.data[0].id as number, userId)
+        this.loadConversation(response.data[0].id as number)
         this.listenToPusherEvents(response.data as Conversation[])
       })
   }
 
-  static async loadConversation(conversationId: number, userId: number|string): Promise<void> {
+  static async loadConversation(conversationId: number): Promise<void> {
+    const userId: number|string = store.getters.getUserId
     if ((store.getters.getCurrentDiscussion as Discussion).id !== conversationId) {
       return axios
         .get(`http://127.0.0.1:8000/api/users/${userId}/conversations/${conversationId}`)

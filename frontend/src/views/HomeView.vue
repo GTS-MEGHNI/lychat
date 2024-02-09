@@ -15,9 +15,9 @@ function scrollConversationToBottom() {
 </script>
 
 <template>
-  <SideBarComponent />
-  <div class="h-full ml-[5.875rem] w-[calc(100%-5.875rem)]">
+  <div class="h-full">
     <div class="flex h-full">
+      <SideBarComponent />
       <MessagesContainerComponent />
       <div class="flex flex-col w-full justify-between">
         <ConversationComponent ref="conversationRef" />
