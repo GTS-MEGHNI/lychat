@@ -18,7 +18,6 @@ onMounted(() => {
 function loadConversation(conversationId: number) {
   ConversationsService.loadConversation(conversationId)
 }
-
 </script>
 
 <template>

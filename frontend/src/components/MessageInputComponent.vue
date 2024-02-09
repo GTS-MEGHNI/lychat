@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { getCurrentInstance, onMounted, ref } from 'vue'
 import { Store, useStore } from 'vuex'
 import { MessageSenderService } from '@/services/MessageSenderService'
@@ -7,7 +6,7 @@ import { MessageSenderService } from '@/services/MessageSenderService'
 let input = ref<string>('')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let store: Store<any>
-let instance : ReturnType<typeof getCurrentInstance> = null
+let instance: ReturnType<typeof getCurrentInstance> = null
 
 onMounted(() => {
   store = useStore()
@@ -15,24 +14,17 @@ onMounted(() => {
   window.addEventListener('keydown', handleKeyPress)
 })
 
-
 function sendMessage() {
-  if(input.value !== '') {
+  if (input.value !== '') {
     MessageSenderService.send(input.value)
-    if(instance !== null)
-      instance.emit('messageSent')
+    if (instance !== null) instance.emit('messageSent')
     input.value = ''
   }
 }
 
-function handleKeyPress(event:any) {
-  if(event.keyCode === 13)
-    sendMessage()
+function handleKeyPress(event: any) {
+  if (event.keyCode === 13) sendMessage()
 }
-
-
-
-
 </script>
 
 <template>

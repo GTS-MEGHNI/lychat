@@ -7,11 +7,11 @@ import { type Ref, ref } from 'vue'
 
 const conversationRef: Ref<HTMLDivElement | undefined> = ref(undefined)
 
-  function scrollConversationToBottom() {
-    if (conversationRef.value) {
-      conversationRef.value.scrollTop = conversationRef.value.scrollHeight;
-    }
+function scrollConversationToBottom() {
+  if (conversationRef.value) {
+    conversationRef.value.scrollTop = conversationRef.value.scrollHeight
   }
+}
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const conversationRef: Ref<HTMLDivElement | undefined> = ref(undefined)
     <div class="flex h-full">
       <MessagesContainerComponent />
       <div class="flex flex-col w-full justify-between">
-        <ConversationComponent ref="conversationRef"/>
+        <ConversationComponent ref="conversationRef" />
         <MessageInputComponent @messageSent="scrollConversationToBottom" />
       </div>
     </div>

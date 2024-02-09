@@ -5,7 +5,6 @@ import type { Discussion } from '@/types/Discussion'
 import { uuid } from 'vue-uuid'
 
 export class MessageSenderService {
-
   static reshapedMessage: ConversationMessage
 
   static send(content: string) {
@@ -19,16 +18,21 @@ export class MessageSenderService {
   static sendMessageToApi() {
     const userId = store.getters.getUserId
     const conversationId = (store.getters.getCurrentDiscussion as Discussion).id
-    axios.post(`http://localhost:8000/api/users/${userId}/conversations/${conversationId}/messages`,
-      this.reshapedMessage).then((response) => {
-      const apiResponse = response.data
-      store.dispatch('messageStored', {
-        ...apiResponse,
-        oldId: this.reshapedMessage.id
-      }).then()
-    })
+    axios
+      .post(
+        `http://localhost:8000/api/users/${userId}/conversations/${conversationId}/messages`,
+        this.reshapedMessage
+      )
+      .then((response) => {
+        const apiResponse = response.data
+        store
+          .dispatch('messageStored', {
+            ...apiResponse,
+            oldId: this.reshapedMessage.id
+          })
+          .then()
+      })
   }
-
 
   static reshapeMessage(content: string): ConversationMessage {
     return {
@@ -45,5 +49,4 @@ export class MessageSenderService {
     const audio = new Audio('src/assets/sound/send-message-sound.mp3')
     audio.play().then()
   }
-
 }

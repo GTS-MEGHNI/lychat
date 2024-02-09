@@ -10,8 +10,7 @@ import store from '@/store'
 let currentDiscussion = ref<Discussion | {}>({})
 let discussionMessages = ref<Array<ConversationMessage>>([])
 let messagesContainer = ref()
-let currentDiscussionWatcher: ReturnType<typeof store.watch> = () => {
-}
+let currentDiscussionWatcher: ReturnType<typeof store.watch> = () => {}
 
 onMounted(() => {
   let store = useStore()
@@ -20,16 +19,15 @@ onMounted(() => {
     (discussion: Discussion) => {
       currentDiscussion.value = discussion
       discussionMessages.value = discussion.messages
-    })
+    }
+  )
 })
 
 onUpdated(() => {
   messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
 })
 
-
 onUnmounted(currentDiscussionWatcher)
-
 
 function shouldDisplayInfoChecker(index: number): boolean {
   let previousMessage: ConversationMessage = discussionMessages.value[index - 1]
@@ -40,7 +38,8 @@ function shouldDisplayInfoChecker(index: number): boolean {
 <template>
   <div
     ref="messagesContainer"
-    class="overflow-y-scroll overflow-x-hidden bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem] mb-4">
+    class="overflow-y-scroll overflow-x-hidden bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem] mb-4"
+  >
     <div v-if="Object.keys(currentDiscussion).length !== 0">
       <div class="flex items-center text-soft mb-[3.75rem]">
         <div class="w-[3.75rem] sh-[3.75rem] mr-[1.125rem]">
@@ -52,7 +51,6 @@ function shouldDisplayInfoChecker(index: number): boolean {
         </div>
       </div>
       <div v-for="(discussionMessage, index) in discussionMessages" :key="index">
-
         <ConversationMessageComponent
           v-if="!discussionMessage.isCurrentUserMessage"
           :id="discussionMessage.id"
@@ -74,7 +72,6 @@ function shouldDisplayInfoChecker(index: number): boolean {
           :isCurrentUserMessage="discussionMessage.isCurrentUserMessage"
           :shouldDisplayInfo="shouldDisplayInfoChecker(index)"
         />
-
       </div>
     </div>
   </div>

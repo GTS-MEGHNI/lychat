@@ -6,7 +6,6 @@ interface AdditionProps {
 }
 
 defineProps<ConversationMessage & AdditionProps>()
-
 </script>
 
 <template>
