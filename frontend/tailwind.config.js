@@ -3,6 +3,7 @@ export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,vue}",], theme: {
         extend: {
             colors: {
+                error : '#ff2143',
                 primary: '#5150F9',
                 dark: {
                     primary: '#1e1f25',

@@ -1,4 +1,4 @@
-import { ActionContext, createStore } from 'vuex'
+import { ActionContext, createStore, MutationPayload } from 'vuex'
 import type { RootState } from '@/types/state'
 import type {
   Conversation,
@@ -9,7 +9,8 @@ import type {
 } from '@/types/conversation'
 import type { Discussion } from '@/types/Discussion'
 
-export default createStore<RootState>({
+
+const store = createStore<RootState>({
   state: {
     user: {},
     currentDiscussion: {},
@@ -22,6 +23,14 @@ export default createStore<RootState>({
     getUser: (state: RootState): Participant => state.user as Participant
   },
   mutations: {
+    initialize(state: RootState) {
+      if (localStorage.getItem('user') !== null) {
+        this.replaceState(
+          Object.assign(state.user, JSON.parse(localStorage.getItem('user') as string))
+        )
+      }
+    },
+
     setConversations: (state: RootState, payload: Array<Conversation>) =>
       (state.conversations = payload),
 
@@ -40,7 +49,7 @@ export default createStore<RootState>({
     },
 
     updateUserData: (state: RootState, payload: Participant) => {
-      state.user = { ... payload }
+      state.user = { ...payload }
     }
   },
   actions: {
@@ -80,7 +89,24 @@ export default createStore<RootState>({
 
     userLogged: (state: ActionContext<RootState, RootState>, payload: Participant) => {
       state.commit('updateUserData', payload)
-    }
+    },
+
+    userLoadedFromStorage: (state: ActionContext<RootState, RootState>, payload: Participant) =>
+      state.commit('updateUserData', payload)
   },
-  modules: {}
+  plugins:
+    [],
+  modules:
+    {}
 })
+
+store.subscribe((mutation: MutationPayload, state: RootState) => {
+  if (state.user !== undefined) {
+    if (Object.keys(state.user).length !== 0) {
+      localStorage.setItem('user', JSON.stringify(state.user))
+      localStorage.getItem('user')
+    }
+  }
+})
+
+export default store
