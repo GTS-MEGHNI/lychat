@@ -35,7 +35,7 @@ export class MessageSenderService {
       type: message.type,
       content: message.content,
       owner: store.getters.getUser,
-      sentAt: '04:00 PM',
+      sentAt: this.getSentAtValue(),
       isCurrentUserMessage: true
     }
   }
@@ -45,4 +45,8 @@ export class MessageSenderService {
     audio.play().then()
   }
 
+  static getSentAtValue(): string {
+    const currentDate = new Date();
+    return  currentDate.toLocaleTimeString('en-US', { hour12: true }).replace(/:\d+ /, ' ')
+  }
 }

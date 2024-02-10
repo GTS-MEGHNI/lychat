@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Dictionary;
 use App\Utility;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property mixed $owner
  * @property mixed $conversation
  * @property mixed $content_type
+ * @property mixed $created_at
+ * @property mixed $conversation_id
  *
  * @method static create(array $array)
  */
@@ -32,6 +33,8 @@ class ConversationMessage extends Model
         'conversation_id',
     ];
 
+
+
     public function conversation(): BelongsTo
     {
         return $this->belongsTo(Conversation::class);
@@ -45,7 +48,7 @@ class ConversationMessage extends Model
     public function sentAt(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => Carbon::parse($value)->format('h:i A')
+            get: fn ($value) => $this->created_at->format('h:i A')
         );
     }
 
