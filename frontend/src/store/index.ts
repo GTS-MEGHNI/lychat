@@ -1,7 +1,7 @@
 import { ActionContext, createStore, MutationPayload } from 'vuex'
 import type { RootState } from '@/types/state'
 import type {
-  Conversation,
+  Conversation, ConversationId,
   ConversationMessage,
   DispatchedConversationMessage,
   Participant,
@@ -42,7 +42,7 @@ const store = createStore<RootState>({
 
     updateMessageId: (state: RootState, payload: DispatchedConversationMessage) => {
       const messages: ConversationMessage[] = (state.currentDiscussion as Discussion).messages
-      const index = messages.findIndex(
+      const index: number = messages.findIndex(
         (message: ConversationMessage) => message.id === payload.oldId
       )
       messages[index].id = payload.id
@@ -50,7 +50,17 @@ const store = createStore<RootState>({
 
     updateUserData: (state: RootState, payload: Participant) => {
       state.user = { ...payload }
+    },
+
+    updateConversationLatestMessage: (state: RootState, payload: ConversationMessage) => {
+      const conversationId: ConversationId = (state.currentDiscussion as Discussion).id
+      const index: number = state.conversations.findIndex(
+        (conversation: Conversation) => conversation.id === conversationId
+      )
+      console.log(payload)
+      state.conversations[index].latestMessage = { ... payload}
     }
+
   },
   actions: {
     conversationsFetched: (
@@ -68,11 +78,9 @@ const store = createStore<RootState>({
       state.commit('appendMessageInCurrentDiscussion', payload)
     },
 
-    messageStored: (
-      state: ActionContext<RootState, RootState>,
-      payload: DispatchedConversationMessage
-    ) => {
+    messageStored: (state: ActionContext<RootState, RootState>, payload: DispatchedConversationMessage) => {
       state.commit('updateMessageId', payload)
+      state.commit('updateConversationLatestMessage', payload as ConversationMessage)
     },
 
     messageReceived: (

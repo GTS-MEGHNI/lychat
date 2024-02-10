@@ -1,4 +1,5 @@
 export type ContentType = 'IMAGE' | 'TEXT'
+export type ConversationId = number | string
 
 export interface Participant {
   id: number | string
@@ -25,7 +26,7 @@ export interface ReceivedConversationMessage {
 }
 
 export interface Conversation {
-  id: number | string
+  id: ConversationId
   participants: Array<Participant>
   latestMessage: ConversationMessage
   unreadMessagesCount: number

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ConversationMessageComponent from '@/components/conversation/ConversationMessageComponent.vue'
 import SelfMadeMessageComponent from '@/components/conversation/SelfMadeMessageComponent.vue'
-import { onMounted, onUnmounted, onUpdated, ref } from 'vue'
+import { onBeforeMount, onMounted, onUnmounted, onUpdated, ref } from 'vue'
 import type { ConversationMessage } from '@/types/conversation'
 import { useStore } from 'vuex'
 import type { Discussion } from '@/types/Discussion'

@@ -1,19 +1,25 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import SearchInputComponent from '@/components/SearchInputComponent.vue'
 import MessageComponent from '@/components/MessageComponent.vue'
 import type { Conversation } from '@/types/conversation'
 import { ConversationsService } from '@/services/ConversationsService'
+import store from '@/store'
 
-let conversations = ref<Array<Conversation>>([])
+let conversations = ref<Conversation[]>([])
+let watcher: ReturnType<typeof store.watch> = () => {}
 
 onMounted(() => {
   let store = useStore()
-  ConversationsService.fetchConversations().then(() => {
-    conversations.value = store.getters.getConversations
-  })
+  ConversationsService.fetchConversations()
+  watcher = store.watch(() => store.getters.getConversations,
+    (fetchedConversations: Conversation[]) => {
+      conversations.value = fetchedConversations
+    })
 })
+
+onUnmounted(watcher)
 
 function loadConversation(conversationId: number) {
   ConversationsService.loadConversation(conversationId)

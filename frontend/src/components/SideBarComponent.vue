@@ -66,10 +66,13 @@ function logout() {
     </div>
 
     <div class="relative">
-      <div v-if="toggleMenu" class="p-2 rounded-md flex items-end text-md absolute bottom-12 left-8 text-soft bg-dark-surface w-36 h-fit">
-        <div class="ml-1 flex gap-2 items-center">
+      <div v-if="toggleMenu" class="p-2 rounded-md flex flex-col gap-4  text-md absolute bottom-12 left-8 text-soft bg-dark-surface w-52 h-fit">
+        <div>
+          Logged as : {{(user as Participant).username}}
+        </div>
+        <div @click="logout" class="ml-1 flex gap-2 items-center w-full">
           <img class="w-4 h-4" src="../assets/icons/logout.svg" alt="">
-          <button @click="logout">Log out</button>
+          <button>Log out</button>
         </div>
       </div>
       <div class="mx-auto w-10 h-10">
