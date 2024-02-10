@@ -29,6 +29,8 @@ export interface Conversation {
   id: ConversationId
   participants: Array<Participant>
   latestMessage: ConversationMessage
+  title:string
+  isActive: boolean
   unreadMessagesCount: number
   avatarUrl: string
   isGroup: boolean

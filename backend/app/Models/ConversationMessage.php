@@ -33,8 +33,6 @@ class ConversationMessage extends Model
         'conversation_id',
     ];
 
-
-
     public function conversation(): BelongsTo
     {
         return $this->belongsTo(Conversation::class);

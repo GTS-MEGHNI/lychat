@@ -13,7 +13,7 @@ export default {
                     type: '#282932'
                 },
                 soft: "#E9E9E9",
-                green: '#258C60',
+                green: '#41D37E',
                 gray: {
                     primary: '#A9ABAD',
                     secondary: '#768396'

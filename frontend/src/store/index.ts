@@ -57,8 +57,16 @@ const store = createStore<RootState>({
       const index: number = state.conversations.findIndex(
         (conversation: Conversation) => conversation.id === conversationId
       )
-      state.conversations[index].latestMessage = { ... payload}
+      state.conversations[index].latestMessage = { ...payload }
+    },
+
+    updateConversationActiveStatus: (state: RootState, conversationId: ConversationId) => {
+      const index: number = state.conversations.findIndex(
+        (conversation: Conversation) => conversation.id === conversationId
+      )
+      state.conversations[index].isActive = true
     }
+
 
   },
   actions: {
@@ -96,7 +104,13 @@ const store = createStore<RootState>({
     },
 
     userLoadedFromStorage: (state: ActionContext<RootState, RootState>, payload: Participant) =>
-      state.commit('updateUserData', payload)
+      state.commit('updateUserData', payload),
+
+    conversationActivated:(state:ActionContext<RootState, RootState>, payload: { conversationId: ConversationId }) =>
+      state.commit('updateConversationActiveStatus', payload.conversationId)
+
+
+
   },
   plugins:
     [],

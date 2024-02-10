@@ -13,13 +13,21 @@ onBeforeMount(() => {
 
 <template>
   <div class="flex items-center">
-    <div class="rounded-full overflow-hidden min-w-[50px] min-h-[50px]">
-      <img class="w-[50px] h-[50px]" :src="avatarUrl" alt="" />
+    <div class="relative w-fit h-fit">
+      <div class="relative rounded-full overflow-hidden min-w-[50px] min-h-[50px]">
+        <img class="w-[50px] h-[50px]" :src="avatarUrl" alt="" />
+      </div>
+
+      <div v-if="isActive" class="flex justify-center items-center absolute h-3 w-3 bg-white rounded-full bottom-1 right-0">
+        <div class="mx-auto absolute h-2 w-2 bg-green rounded-full"></div>
+      </div>
+
     </div>
+
     <div class="flex justify-between w-full">
       <div class="flex flex-col ml-[.938rem] max-w-[9.375rem]">
 
-        <span class="overflow-hidden text-ellipsis text-nowrap text-soft font-bold">Conversation N° {{ id }}</span>
+        <span class="overflow-hidden text-ellipsis text-nowrap text-soft font-bold">{{ title }}</span>
 
         <!--        <span class="text-sm text-green">Typing...</span>-->
         <div v-if="latestMessage.type === 'TEXT'"

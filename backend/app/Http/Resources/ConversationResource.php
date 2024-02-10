@@ -28,6 +28,7 @@ class ConversationResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'title' => $this->title,
             'participants' => UserResource::collection($this->users),
             'latestMessage' => new ConversationMessageResource($this->latestMessage),
             'unreadMessagesCount' => $this->subscribers[0]->number_unread_messages,
@@ -36,6 +37,7 @@ class ConversationResource extends JsonResource
             'isMuted' => $this->subscribers[0]->is_muted,
             'isPinned' => $this->subscribers[0]->is_pinned,
             'isArchived' => $this->subscribers[0]->is_archived,
+            'isActive' => false,
         ];
     }
 
@@ -44,7 +46,6 @@ class ConversationResource extends JsonResource
         return [
             ...$this->toArray(request()),
             'messages' => ConversationMessageResource::collection($this->messages),
-            'title' => $this->title,
         ];
     }
 }

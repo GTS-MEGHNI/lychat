@@ -43,6 +43,8 @@ function loadConversation(conversationId: number) {
         :key="index"
       >
         <MessageComponent
+          :isActive="conversation.isActive"
+          :title="conversation.title"
           :id="conversation.id"
           :participants="conversation.participants"
           :latestMessage="conversation.latestMessage"
