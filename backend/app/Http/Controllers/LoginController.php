@@ -12,8 +12,7 @@ class LoginController extends Controller
     public function login(LoginRequest $request, LoginService $loginService): JsonResponse
     {
         $loginService->authenticate($request->validated());
-        event(new UserConnected(1));
-
+        event(new UserConnected(1, $loginService->getUser()->id));
         return response()->json($loginService->getUser());
     }
 }
