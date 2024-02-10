@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { ConversationMessage } from '@/types/conversation'
+import type { ConversationMessage, FileMetaData } from '@/types/conversation'
+import TextContentComponent from '@/components/conversation/TextContentComponent.vue'
+import ImageContentComponent from '@/components/conversation/ImageContentComponent.vue'
+import FileContentComponent from '@/components/conversation/FileContentComponent.vue'
 
 interface AdditionProps {
   shouldDisplayInfo: boolean
@@ -15,18 +18,15 @@ defineProps<ConversationMessage & AdditionProps>()
         <span class="text-gray-primary text-[.813rem]">{{ sentAt }}</span>
         <span class="text-soft font-bold ml-[.375rem]">{{ owner.username }}</span>
       </div>
-      <div class="flex items-center justify-end">
-        <div
-          :class="
-            shouldDisplayInfo
-              ? `rounded-tl-2xl rounded-br-2xl rounded-bl-2xl w-fit bg-primary px-4 py-[.75rem]`
-              : 'rounded-2xl  w-fit bg-primary px-4 py-[.75rem] mt-2'
-          "
-        >
-          <p v-if="type === 'TEXT'" class="text-soft">{{ content }}</p>
-          <div v-else class="max-w-64">
-            <img class="rounded-lg" :src="content" alt="" />
-          </div>
+      <div class="text-soft flex items-center justify-end">
+        <div class="w-fit bg-primary px-4 py-[.75rem]"
+             :class="shouldDisplayInfo ? `rounded-tl-2xl rounded-br-2xl rounded-bl-2xl`
+              : 'rounded-2xl mt-2'">
+          <TextContentComponent v-if="type === 'TEXT'" :content="content" />
+          <ImageContentComponent v-else-if="type === 'IMAGE'" :content="content" />
+          <FileContentComponent v-else
+                                :name="(content as FileMetaData).name"
+                                :size="(content as FileMetaData).size" />
         </div>
       </div>
     </div>

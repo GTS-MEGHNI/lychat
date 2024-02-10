@@ -31,11 +31,11 @@ defineProps<ConversationMessage & AdditionProps>()
             <img class="rounded-lg" :src="content" alt="" />
           </div>
         </div>
-        <div class="ml-[.75rem]">
-          <button>
-            <img src="../../assets/icons/conversation-message-actions-icon.svg" alt="" />
-          </button>
-        </div>
+<!--        <div class="ml-[.75rem]">-->
+<!--          <button>-->
+<!--            <img src="../../assets/icons/conversation-message-actions-icon.svg" alt="" />-->
+<!--          </button>-->
+<!--        </div>-->
       </div>
     </div>
   </div>

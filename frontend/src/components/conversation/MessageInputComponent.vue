@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { getCurrentInstance, onMounted, ref } from 'vue'
 import { MessageSenderService } from '@/services/MessageSenderService'
+import { FileSenderService } from '@/services/FileSenderService'
 
 let input = ref<string>('')
 let instance: ReturnType<typeof getCurrentInstance> = null
-let imageUrl = ref<string>('')
 
 onMounted(() => {
   instance = getCurrentInstance()
@@ -27,23 +27,15 @@ function handleKeyPress(event: any) {
 }
 
 function openFilePicker() {
-  (instance?.refs.filePicker as HTMLInputElement).click()
+  const filePicker: HTMLInputElement = (instance?.refs.filePicker as HTMLInputElement)
+  filePicker.click()
 }
 
 function handleImagePicked(event: Event) {
   const target = (event.target as HTMLInputElement)
   if (target && target.files) {
     const file: File = target.files[0]
-    if (file) {
-      const reader: FileReader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => {
-         MessageSenderService.send({
-          content: reader.result as string,
-          type: 'IMAGE'
-        })
-      }
-    }
+    if (file) FileSenderService.handleFile(file)
   }
 }
 
@@ -52,10 +44,11 @@ function handleImagePicked(event: Event) {
 
 <template>
   <div class="justify-center items-center flex bg-dark-type py-[1.188rem]">
-    <div class="gap-4 w-full mx-[2.25rem] rounded-[1.563rem] justify-between bg-dark-primary flex flex-col py-4 px-[1.5rem]">
-<!--      <div class="max-w-16">-->
-<!--        <img src="../../assets/pictures/avatar-6.png" alt="">-->
-<!--      </div>-->
+    <div
+      class="gap-4 w-full mx-[2.25rem] rounded-[1.563rem] justify-between bg-dark-primary flex flex-col py-4 px-[1.5rem]">
+      <!--      <div class="max-w-16">-->
+      <!--        <img src="../../assets/pictures/avatar-6.png" alt="">-->
+      <!--      </div>-->
       <div class="flex w-full">
         <div class="flex grow mr-5">
           <div>

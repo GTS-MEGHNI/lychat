@@ -1,4 +1,4 @@
-export type ContentType = 'IMAGE' | 'TEXT'
+export type ContentType = 'IMAGE' | 'TEXT' | 'FILE'
 export type ConversationId = number | string
 
 export interface Participant {
@@ -7,10 +7,17 @@ export interface Participant {
   avatarUrl: string
 }
 
+export interface FileMetaData {
+  name: string,
+  size: number,
+  url?: string,
+  base64?: string
+}
+
 export interface ConversationMessage {
   id: number | string
   type: ContentType
-  content: string
+  content: string | FileMetaData
   owner: Participant
   sentAt: string
   isCurrentUserMessage: boolean
@@ -29,7 +36,7 @@ export interface Conversation {
   id: ConversationId
   participants: Array<Participant>
   latestMessage: ConversationMessage
-  title:string
+  title: string
   isActive: boolean
   unreadMessagesCount: number
   avatarUrl: string

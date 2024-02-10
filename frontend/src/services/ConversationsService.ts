@@ -30,10 +30,17 @@ export class ConversationsService {
         if (data.conversationMessage.owner.id !== store.getters.getUserId) {
           data.conversationMessage.isCurrentUserMessage = false
           store.dispatch('messageReceived', data).then()
+          store.dispatch('conversationActivated', {
+            conversationId: data.conversationId,
+            userId: data.conversationMessage.owner.id
+          }).then()
+
         }
       })
-      channel.bind('conversation-active', function(data: { conversationId: ConversationId }) {
-        store.dispatch('conversationActivated', data).then()
+      channel.bind('conversation-active', function(data: { conversationId: ConversationId, userId: number }) {
+        if (store.getters.getUserId !== data.userId) {
+          store.dispatch('conversationActivated', data).then()
+        }
       })
     })
   }

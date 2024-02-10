@@ -14,6 +14,5 @@ const initializeStore = () => {
     store.dispatch('userLoadedFromStorage', user).then()
   }
 }
-
 initializeStore()
 app.mount('#app')
