@@ -16,10 +16,9 @@ export class ConversationsService {
 
   static async loadConversation(conversationId: number) {
     const userId: number | string = store.getters.getUserId
-    if ((store.getters.getCurrentDiscussion as Discussion).id !== conversationId) {
-      const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/conversations/${conversationId}`)
-      await store.dispatch('conversationFetched', response.data)
-    }
+    const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/conversations/${conversationId}`)
+    await store.dispatch('conversationFetched', response.data)
+
   }
 
   static listenToPusherEvents(conversations: Conversation[]) {
@@ -29,7 +28,6 @@ export class ConversationsService {
     conversations.forEach(function(conversation: Conversation) {
       const channel: Channel = pusher.subscribe(`conversation-${conversation.id}`)
       channel.bind('message-created', function(data: ReceivedConversationMessage) {
-        console.log(data.conversationMessage.owner.id !== store.getters.getUserId)
         if (data.conversationMessage.owner.id !== store.getters.getUserId) {
           data.conversationMessage.isCurrentUserMessage = false
           store.dispatch('messageReceived', data).then()

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
-import { onBeforeMount, reactive, ref } from 'vue'
+import { type ComponentInternalInstance, getCurrentInstance, onBeforeMount, onMounted, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import type { Participant } from '@/types/conversation'
 import { useRouter } from 'vue-router'
 
 let user: Participant | {} = reactive({})
 let toggleMenu = ref<boolean>(false)
-let router
+let router, instance:  ComponentInternalInstance | null
 
 onBeforeMount(() => {
   const store = useStore()
@@ -15,7 +15,10 @@ onBeforeMount(() => {
   user = store.getters.getUser
 })
 
+onMounted(() => instance = getCurrentInstance())
+
 function logout() {
+  (instance as ComponentInternalInstance).emit('logout')
   localStorage.removeItem('user')
   router.push('auth')
 }

@@ -57,7 +57,6 @@ const store = createStore<RootState>({
       const index: number = state.conversations.findIndex(
         (conversation: Conversation) => conversation.id === conversationId
       )
-      console.log(payload)
       state.conversations[index].latestMessage = { ... payload}
     }
 
@@ -87,9 +86,6 @@ const store = createStore<RootState>({
       state: ActionContext<RootState, RootState>,
       payload: ReceivedConversationMessage
     ) => {
-      console.log(
-        payload.conversationId + ' |||| ' + (state.getters.getCurrentDiscussion as Discussion).id
-      )
       if (payload.conversationId === (state.getters.getCurrentDiscussion as Discussion).id) {
         state.commit('appendMessageInCurrentDiscussion', payload.conversationMessage)
       }
