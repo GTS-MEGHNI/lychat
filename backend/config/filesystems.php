@@ -56,6 +56,11 @@ return [
             'throw' => false,
         ],
 
+        'conversations' => [
+            'driver' => 'local',
+            'root' => public_path().'/conversations',
+        ],
+
     ],
 
     /*

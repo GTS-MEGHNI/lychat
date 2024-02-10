@@ -4,6 +4,7 @@
 
 namespace App\Models;
 
+use App\Dictionary;
 use App\Utility;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property mixed $owner
  * @property mixed $conversation
+ * @property mixed $content_type
  *
  * @method static create(array $array)
  */
@@ -51,6 +53,16 @@ class ConversationMessage extends Model
     {
         return new Attribute(
             get: fn () => Utility::getUserId() == $this->owner->id
+        );
+    }
+
+    public function content(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => $this->content_type == Dictionary::IMAGE_CONTENT ?
+                env('APP_URL').'/conversations/'.$this->conversation_id.'/'.$value
+                :
+                $value
         );
     }
 }

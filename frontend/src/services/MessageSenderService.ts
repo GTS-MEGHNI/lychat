@@ -1,4 +1,4 @@
-import type { ConversationMessage } from '@/types/conversation'
+import type { ContentType, ConversationMessage } from '@/types/conversation'
 import store from '@/store'
 import axios from 'axios'
 import type { Discussion } from '@/types/Discussion'
@@ -7,8 +7,8 @@ import { uuid } from 'vue-uuid'
 export class MessageSenderService {
   static reshapedMessage: ConversationMessage
 
-  static send(content: string) {
-    this.reshapedMessage = this.reshapeMessage(content)
+  static send(message: { content: string, type: ContentType }) {
+    this.reshapedMessage = this.reshapeMessage(message)
     store.dispatch('messageCreated', this.reshapedMessage).then(() => {
       this.playSendSound()
       this.sendMessageToApi()
@@ -18,27 +18,26 @@ export class MessageSenderService {
   static sendMessageToApi() {
     const userId = store.getters.getUserId
     const conversationId = (store.getters.getCurrentDiscussion as Discussion).id
-    axios
-      .post(
-        `http://localhost:8000/api/users/${userId}/conversations/${conversationId}/messages`,
-        this.reshapedMessage
-      )
+    const payload: ConversationMessage = { ...this.reshapedMessage }
+    if (payload.type === 'IMAGE') {
+      const regex: RegExp = new RegExp(/^data:image\/\w+;base64,(.*)$/)
+      payload.content = (payload.content.match(regex) as Array<string>)[1]
+    }
+    axios.post(`http://localhost:8000/api/users/${userId}/conversations/${conversationId}/messages`, payload)
       .then((response) => {
         const apiResponse = response.data
-        store
-          .dispatch('messageStored', {
-            ...apiResponse,
-            oldId: this.reshapedMessage.id
-          })
-          .then()
+        store.dispatch('messageStored', {
+          ...apiResponse,
+          oldId: this.reshapedMessage.id
+        }).then()
       })
   }
 
-  static reshapeMessage(content: string): ConversationMessage {
+  static reshapeMessage(message: { content: string, type: ContentType }): ConversationMessage {
     return {
       id: uuid.v4(),
-      type: 'TEXT',
-      content: content,
+      type: message.type,
+      content: message.content,
       owner: store.getters.getUser,
       sentAt: '04:00 PM',
       isCurrentUserMessage: true

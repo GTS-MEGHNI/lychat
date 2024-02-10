@@ -3,10 +3,13 @@
 namespace App\Http\Requests;
 
 use App\Dictionary;
+use App\Rules\ImageRule;
 use Illuminate\Validation\Rule;
 
 class AddMessageRequest extends ApiRequest
 {
+    protected $stopOnFirstFailure = true;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -19,7 +22,7 @@ class AddMessageRequest extends ApiRequest
     {
         return [
             'type' => ['required', Rule::in([Dictionary::TEXT_CONTENT, Dictionary::IMAGE_CONTENT])],
-            'content' => ['required', 'max:1024'],
+            'content' => ['required', new ImageRule($this->input('type'))],
         ];
     }
 }

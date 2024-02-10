@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SideBarComponent from '@/components/SideBarComponent.vue'
 import ConversationComponent from '@/components/conversation/ConversationComponent.vue'
-import MessageInputComponent from '@/components/MessageInputComponent.vue'
+import MessageInputComponent from '@/components/conversation/MessageInputComponent.vue'
 import MessagesContainerComponent from '@/components/MessagesContainerComponent.vue'
 import { type Ref, ref } from 'vue'
 

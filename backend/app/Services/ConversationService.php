@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Dictionary;
 use App\Http\Resources\ConversationResource;
 use App\Models\Conversation;
 use App\Models\ConversationMessage;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Storage;
 
 class ConversationService
 {
@@ -35,7 +37,10 @@ class ConversationService
                 'conversation_id' => $conversation->id,
                 'user_id' => $user->id,
                 'content_type' => $payload['type'],
-                'content' => $payload['content'],
+                'content' => $payload['type'] == Dictionary::TEXT_CONTENT ?
+                    $payload['content']
+                    :
+                    $this->getImageFileName($payload['content'], $conversation),
             ]);
         }
     }
@@ -43,5 +48,16 @@ class ConversationService
     public function getCreatedMessage(): ConversationMessage
     {
         return $this->conversationMessage;
+    }
+
+    public function getImageFileName(string $content, Conversation $conversation): string
+    {
+        $decodedString = base64_decode($content);
+        $mime = explode('/', getimagesizefromstring($decodedString)['mime'])[1];
+        $directory = $conversation->id.'/';
+        $filename = uniqid().'.'.$mime;
+        Storage::disk('conversations')->put($directory.$filename, $decodedString);
+
+        return $filename;
     }
 }
