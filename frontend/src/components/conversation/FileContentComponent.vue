@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import type { FileMetaData } from '@/types/conversation'
 
-defineProps<FileMetaData>()
+const props = defineProps<FileMetaData>()
+
+function downloadFile() {
+  window.open(props.url)
+}
 </script>
 
 <template>
   <div class="flex items-center gap-2">
-    <div class="w-8">
-      <button @click=""><img src="../../assets/icons/file.svg" alt=""></button>
+    <div class="w-6">
+      <button @click="downloadFile"><img src="../../assets/icons/file.svg" alt=""></button>
     </div>
     <div>
-      <p>{{name}}</p>
-      <p>{{size}} B</p>
+      <p>{{ name }}</p>
+      <p>{{ size }} B</p>
     </div>
   </div>
 </template>
