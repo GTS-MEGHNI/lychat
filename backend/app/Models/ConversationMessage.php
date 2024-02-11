@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property mixed $content_type
  * @property mixed $created_at
  * @property mixed $conversation_id
+ * @property mixed $file_name
+ * @property mixed $file_size
  *
  * @method static create(array $array)
  */
@@ -31,6 +33,8 @@ class ConversationMessage extends Model
         'content',
         'user_id',
         'conversation_id',
+        'file_name',
+        'file_size',
     ];
 
     public function conversation(): BelongsTo
@@ -60,10 +64,17 @@ class ConversationMessage extends Model
     public function content(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => $this->content_type == Dictionary::IMAGE_CONTENT ?
-                env('APP_URL').'/conversations/'.$this->conversation_id.'/'.$value
-                :
-                $value
+            get: function ($value) {
+                return match ($this->content_type) {
+                    Dictionary::TEXT_CONTENT => $value,
+                    Dictionary::IMAGE_CONTENT => env('APP_URL').'/conversations/'.$this->conversation_id.'/'.$value,
+                    Dictionary::FILE_CONTENT => [
+                        'name' => $this->file_name,
+                        'size' => $this->file_size,
+                        'url' => env('APP_URL').'/conversations/'.$this->conversation_id.'/'.$value,
+                    ]
+                };
+            }
         );
     }
 }

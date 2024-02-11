@@ -13,6 +13,7 @@ class LoginController extends Controller
     {
         $loginService->authenticate($request->validated());
         event(new UserConnected(1, $loginService->getUser()->id));
+
         return response()->json($loginService->getUser());
     }
 }
