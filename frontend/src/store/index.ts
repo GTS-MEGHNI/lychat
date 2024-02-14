@@ -3,7 +3,7 @@ import type { RootState } from '@/types/state'
 import type {
   Conversation, ConversationId,
   ConversationMessage,
-  DispatchedConversationMessage,
+  DispatchedConversationMessage, FileMetaData,
   Participant,
   ReceivedConversationMessage
 } from '@/types/conversation'
@@ -48,6 +48,13 @@ const store = createStore<RootState>({
       messages[index].id = payload.id
     },
 
+    updateMessageFileUrl: (state: RootState, payload: ConversationMessage) => {
+      const messages: ConversationMessage[] = (state.currentDiscussion as Discussion).messages
+      const index: number = messages.findIndex(
+        (message: ConversationMessage) => message.id === payload.id)
+      messages[index].content.url = payload.content.url
+    },
+
     updateUserData: (state: RootState, payload: Participant) => {
       state.user = { ...payload }
     },
@@ -87,6 +94,8 @@ const store = createStore<RootState>({
 
     messageStored: (state: ActionContext<RootState, RootState>, payload: DispatchedConversationMessage) => {
       state.commit('updateMessageId', payload)
+      if(payload.type === 'FILE') 
+        state.commit('updateMessageFileUrl', payload)
       state.commit('updateConversationLatestMessage', payload as ConversationMessage)
     },
 
@@ -106,9 +115,8 @@ const store = createStore<RootState>({
     userLoadedFromStorage: (state: ActionContext<RootState, RootState>, payload: Participant) =>
       state.commit('updateUserData', payload),
 
-    conversationActivated:(state:ActionContext<RootState, RootState>, payload: { conversationId: ConversationId }) =>
+    conversationActivated: (state: ActionContext<RootState, RootState>, payload: { conversationId: ConversationId }) =>
       state.commit('updateConversationActiveStatus', payload.conversationId)
-
 
 
   },

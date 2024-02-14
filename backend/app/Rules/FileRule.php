@@ -15,7 +15,10 @@ class FileRule implements ValidationRule
         if ($decodedString !== false) {
             $fileInfo = new finfo(FILEINFO_MIME_TYPE);
             $fileType = $fileInfo->buffer($decodedString);
-            request()->request->add(['mime' => explode('/', $fileType)[0]]);
+            if ($fileType == 'application/pdf')
+                request()->request->add(['mime' => 'pdf']);
+            else
+                request()->request->add(['mime' => explode('/', $fileType)[0]]);
             request()->request->add(['size' => strlen($decodedString)]);
         } else {
             $fail(Errors::INVALID_FILE);

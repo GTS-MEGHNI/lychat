@@ -18,16 +18,13 @@ defineProps<ConversationMessage & AdditionProps>()
         <span class="text-gray-primary text-[.813rem]">{{ sentAt }}</span>
         <span class="text-soft font-bold ml-[.375rem]">{{ owner.username }}</span>
       </div>
-      <div class="rounded-2xl w-fit bg-primary text-soft px-4 py-[.75rem] mt-2">
         <TextContentComponent v-if="type === 'TEXT'" :content="content" />
         <ImageContentComponent v-else-if="type === 'IMAGE'"
-                               :content="content"
-                               class="max-w-60" />
+                               :content="content" />
         <FileContentComponent v-else
                               :name="(content as FileMetaData).name"
                               :size="(content as FileMetaData).size"
                               :url="(content as FileMetaData).url" />
-      </div>
     </div>
     <div class="w-[2.125rem] h-[2.125rem] ml-[.688rem]">
       <img v-show="shouldDisplayInfo" :src="owner.avatarUrl" alt="" />

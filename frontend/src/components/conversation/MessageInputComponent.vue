@@ -17,7 +17,9 @@ function sendMessage() {
       content: input.value,
       type: 'TEXT'
     })
-    if (instance !== null) instance.emit('messageSent')
+    setTimeout(function() {
+      if (instance !== null) instance.emit('messageSent')
+    }, 100)
     input.value = ''
   }
 }
@@ -35,7 +37,12 @@ function handleImagePicked(event: Event) {
   const target = (event.target as HTMLInputElement)
   if (target && target.files) {
     const file: File = target.files[0]
-    if (file) FileSenderService.handleFile(file)
+    if (file) {
+      FileSenderService.handleFile(file)
+      setTimeout(function() {
+        if (instance !== null) instance.emit('messageSent')
+      }, 100)
+    }
   }
 }
 

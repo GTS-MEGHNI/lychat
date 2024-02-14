@@ -8,11 +8,9 @@ import { ref } from 'vue'
 const conversationRef = ref()
 
 function scrollConversationToBottom() {
-  setTimeout(() => {
     if (conversationRef.value) {
       conversationRef.value.scrollTop = conversationRef.value.scrollHeight
     }
-  }, 20)
 }
 
 let shouldAppear = ref<boolean>(true)

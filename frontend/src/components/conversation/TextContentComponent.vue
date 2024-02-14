@@ -7,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-  <div>
+  <div class="rounded-2xl w-fit bg-primary text-soft px-4 py-[.75rem] mt-2">
     <p>{{ content }}</p>
   </div>
 </template>

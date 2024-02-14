@@ -1,4 +1,5 @@
 import { type DraftMessage, MessageSenderService } from '@/services/MessageSenderService'
+import type { ContentType } from '@/types/conversation'
 
 export class FileSenderService {
 
@@ -10,21 +11,13 @@ export class FileSenderService {
     const fileType: string = this.getFileType(file.type)
     reader.onload = () => {
       const base64EncodedString: string = FileSenderService.getBase64EncodedStringFrom(reader.result as string)
-      if (fileType === 'image')
-        MessageSenderService.send(({
-          'content': base64EncodedString,
-          'type': 'IMAGE',
-          'originalReaderResult': reader.result as string
-        } as DraftMessage)).then()
-      else if (fileType === 'text') {
-        MessageSenderService.send({
-          'content': base64EncodedString,
-          'type': 'FILE',
-          'originalReaderResult': reader.result as string,
-          'fileName': file.name,
-          'fileSizeInBytes': file.size
-        }).then()
-      }
+      MessageSenderService.send(({
+        'content': base64EncodedString,
+        'type': this.getType(fileType),
+        'originalReaderResult': reader.result as string,
+        'fileName': file.name,
+        'fileSizeInBytes': file.size
+      } as DraftMessage)).then()
     }
   }
 
@@ -35,5 +28,14 @@ export class FileSenderService {
 
   static getFileType(fileType: string): string {
     return (fileType.split('/')[0])
+  }
+
+  static getType(fileType: string): ContentType {
+    switch (fileType) {
+      case 'image':
+        return 'IMAGE'
+      default:
+        return 'FILE'
+    }
   }
 }

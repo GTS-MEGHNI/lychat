@@ -10,12 +10,15 @@ import DiscussionComponent from '@/components/conversation/DiscussionComponent.v
 let currentDiscussion = ref<Discussion | {}>({})
 let discussionMessages = ref<Array<ConversationMessage>>([])
 let messagesContainer = ref()
-let currentDiscussionWatcher: ReturnType<typeof store.watch> = () => {}
+let currentDiscussionWatcher: ReturnType<typeof store.watch> = () => {
+}
 let instance: ComponentInternalInstance | null = null
 
 function scrollToBottom() {
-  if(instance !== null)
-    instance.emit('discussionUpdated')
+  if (instance !== null)
+    setTimeout(function() {
+      if (instance !== null) instance.emit('discussionUpdated')
+    }, 1000)
 }
 
 onMounted(() => {
@@ -45,9 +48,9 @@ onUnmounted(currentDiscussionWatcher)
     <div v-if="Object.keys(currentDiscussion).length !== 0">
       <ConversationHeaderComponent :avatarUrl="(currentDiscussion as Discussion).avatarUrl"
                                    :title="(currentDiscussion as Discussion).title" />
-      <DiscussionComponent :discussionMessages="discussionMessages"/>
-      </div>
+      <DiscussionComponent :discussionMessages="discussionMessages" />
     </div>
+  </div>
 </template>
 
 <style scoped></style>

@@ -83,7 +83,8 @@ class ConversationService
         $directory = $this->conversation->id.'/';
         $mime = match ($fileType) {
             Dictionary::FILE_AUDIO_TYPE => 'mp3',
-            Dictionary::FILE_TEXT_TYPE => 'txt'
+            Dictionary::FILE_TEXT_TYPE => 'txt',
+            Dictionary::PDF_TEXT_TYPE => 'pdf',
         };
         $filename = uniqid().'.'.$mime;
         Storage::disk('conversations')->put($directory.$filename, $decodedString);
