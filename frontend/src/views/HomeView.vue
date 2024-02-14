@@ -3,14 +3,16 @@ import SideBarComponent from '@/components/SideBarComponent.vue'
 import ConversationComponent from '@/components/conversation/ConversationComponent.vue'
 import MessageInputComponent from '@/components/conversation/MessageInputComponent.vue'
 import MessagesContainerComponent from '@/components/MessagesContainerComponent.vue'
-import { type Ref, ref } from 'vue'
+import { ref } from 'vue'
 
-const conversationRef: Ref<HTMLDivElement | undefined> = ref(undefined)
+const conversationRef = ref()
 
 function scrollConversationToBottom() {
-  if (conversationRef.value) {
-    conversationRef.value.scrollTop = conversationRef.value.scrollHeight
-  }
+  setTimeout(() => {
+    if (conversationRef.value) {
+      conversationRef.value.scrollTop = conversationRef.value.scrollHeight
+    }
+  }, 20)
 }
 
 let shouldAppear = ref<boolean>(true)
@@ -32,7 +34,9 @@ function fadeComponent() {
         <SideBarComponent @logout="fadeComponent" />
         <MessagesContainerComponent />
         <div class="flex flex-col w-full justify-between">
-          <ConversationComponent ref="conversationRef" />
+          <div class="overflow-y-scroll h-full overflow-hidden mb-4" ref="conversationRef" >
+            <ConversationComponent @discussionUpdated="scrollConversationToBottom"/>
+          </div>
           <MessageInputComponent @messageSent="scrollConversationToBottom" />
         </div>
       </div>
@@ -41,10 +45,11 @@ function fadeComponent() {
 </template>
 
 <style scoped>
+/*noinspection CssUnusedSymbol*/
 .leave-active-class {
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
-
+/*noinspection CssUnusedSymbol*/
 .leave-to-class {
   opacity: 0;
   transform: translateX(20px);

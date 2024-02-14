@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, onUpdated, ref } from 'vue'
+import { type ComponentInternalInstance, getCurrentInstance, onMounted, onUnmounted, onUpdated, ref } from 'vue'
 import type { ConversationMessage } from '@/types/conversation'
 import { useStore } from 'vuex'
 import type { Discussion } from '@/types/Discussion'
@@ -10,22 +10,29 @@ import DiscussionComponent from '@/components/conversation/DiscussionComponent.v
 let currentDiscussion = ref<Discussion | {}>({})
 let discussionMessages = ref<Array<ConversationMessage>>([])
 let messagesContainer = ref()
-let currentDiscussionWatcher: ReturnType<typeof store.watch> = () => {
+let currentDiscussionWatcher: ReturnType<typeof store.watch> = () => {}
+let instance: ComponentInternalInstance | null = null
+
+function scrollToBottom() {
+  if(instance !== null)
+    instance.emit('discussionUpdated')
 }
 
 onMounted(() => {
   let store = useStore()
+  instance = getCurrentInstance()
   currentDiscussionWatcher = store.watch(
     () => store.getters.getCurrentDiscussion,
     (discussion: Discussion) => {
       currentDiscussion.value = discussion
       discussionMessages.value = discussion.messages
+      scrollToBottom()
     }
   )
 })
 
 onUpdated(() => {
-  messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+  scrollToBottom()
 })
 
 onUnmounted(currentDiscussionWatcher)
@@ -34,10 +41,7 @@ onUnmounted(currentDiscussionWatcher)
 </script>
 
 <template>
-  <div
-    ref="messagesContainer"
-    class="overflow-y-scroll overflow-x-hidden bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem] mb-4"
-  >
+  <div ref="messagesContainer" class="bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem]">
     <div v-if="Object.keys(currentDiscussion).length !== 0">
       <ConversationHeaderComponent :avatarUrl="(currentDiscussion as Discussion).avatarUrl"
                                    :title="(currentDiscussion as Discussion).title" />
