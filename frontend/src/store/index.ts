@@ -52,7 +52,9 @@ const store = createStore<RootState>({
       const messages: ConversationMessage[] = (state.currentDiscussion as Discussion).messages
       const index: number = messages.findIndex(
         (message: ConversationMessage) => message.id === payload.id)
-      messages[index].content.url = payload.content.url
+      if ('url' in (payload.content as FileMetaData)) {
+        (messages[index].content as FileMetaData).url = (payload.content as FileMetaData).url
+      }
     },
 
     updateUserData: (state: RootState, payload: Participant) => {

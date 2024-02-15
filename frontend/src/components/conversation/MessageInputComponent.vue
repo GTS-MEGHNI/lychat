@@ -1,31 +1,27 @@
 <script setup lang="ts">
 import { getCurrentInstance, onMounted, ref } from 'vue'
-import { MessageSenderService } from '@/services/MessageSenderService'
 import { FileSenderService } from '@/services/FileSenderService'
+import { MessageSenderService } from '@/services/MessageSenderService'
 
 let input = ref<string>('')
+let editableDiv = ref<HTMLDivElement>()
 let instance: ReturnType<typeof getCurrentInstance> = null
 
 onMounted(() => {
   instance = getCurrentInstance()
-  window.addEventListener('keydown', handleKeyPress)
 })
 
 function sendMessage() {
   if (input.value !== '') {
-    MessageSenderService.send({
-      content: input.value,
-      type: 'TEXT'
-    })
+    MessageSenderService.send({ content: input.value, type: 'TEXT' })
     setTimeout(function() {
       if (instance !== null) instance.emit('messageSent')
     }, 100)
-    input.value = ''
+    if (instance !== null) {
+      (instance.refs.editableDiv as HTMLDivElement).innerText = ''
+      input.value = ''
+    }
   }
-}
-
-function handleKeyPress(event: any) {
-  if (event.keyCode === 13) sendMessage()
 }
 
 function openFilePicker() {
@@ -46,50 +42,63 @@ function handleImagePicked(event: Event) {
   }
 }
 
+function updateContent() {
+  if (instance !== null)
+    input.value = ((instance.refs.editableDiv as HTMLDivElement).innerText)
+}
+
+function handleContentPaste(event: any) {
+  event.preventDefault()
+  const content = event.clipboardData.getData('text/plain')
+  document.execCommand('insertText', false, content)
+}
 
 </script>
 
 <template>
-  <div class="justify-center items-center flex bg-dark-type py-[1.188rem]">
-    <div
-      class="gap-4 w-full mx-[2.25rem] rounded-[1.563rem] justify-between bg-dark-primary flex flex-col py-4 px-[1.5rem]">
-      <!--      <div class="max-w-16">-->
-      <!--        <img src="../../assets/pictures/avatar-6.png" alt="">-->
-      <!--      </div>-->
-      <div class="flex w-full">
-        <div class="flex grow mr-5">
-          <div>
-            <img src="../../assets/icons/microphone.svg" alt="" />
-          </div>
-          <div class="w-full ml-[.938rem]">
-            <input
-              class="w-full bg-transparent outline-none text-soft"
-              type="text"
-              placeholder="Aa"
-              v-model="input"
-            />
-          </div>
-        </div>
-        <div class="flex gap-[1.25rem]">
-          <div>
-            <button @click="openFilePicker"><img src="../../assets/icons/gallery.svg" alt="" /></button>
-          </div>
-          <div>
-            <img src="../../assets/icons/emojis.svg" alt="" />
-          </div>
-          <div>
-            <button @click="sendMessage">
-              <input @change="handleImagePicked" ref="filePicker" type="file" style="display: none" />
-              <img src="../../assets/icons/send.svg" alt="" />
-            </button>
-          </div>
-          <div>
-            <img src="../../assets/icons/location.svg" alt="" />
-          </div>
-        </div>
+  <div class="flex items-center bg-dark-type py-[1.188rem] px-4">
+    <div>
+      <div>
+        <button @click="openFilePicker"><img src="../../assets/icons/gallery.svg" alt="" /></button>
       </div>
+    </div>
+    <div class="max-h-32 overflow-y-auto w-full mx-2 rounded-[1.563rem] bg-dark-primary py-4 px-[1.5rem]">
+      <div ref="editableDiv"
+           @input="updateContent"
+           @paste="handleContentPaste"
+           class="text-soft outline-none"
+           contenteditable="true"
+           role="textbox"
+           spellcheck="true"
+           tabindex="0">
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <div>
+        <button @click="sendMessage">
+          <input @change="handleImagePicked" ref="filePicker" type="file" style="display: none" />
+          <img src="../../assets/icons/send.svg" alt="" />
+        </button>
+      </div>
+
     </div>
   </div>
 </template>
 
 <style scoped></style>
+<!--            <input-->
+<!--              class="w-full bg-transparent outline-none text-soft"-->
+<!--              type="text"-->
+<!--              placeholder="Aa"-->
+<!--              v-model="input"-->
+<!--            />-->
+
+<!--      <div>-->
+<!--        <img src="../../assets/icons/emojis.svg" alt="" />-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <img src="../../assets/icons/location.svg" alt="" />-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <img src="../../assets/icons/microphone.svg" alt="" />-->
+<!--      </div>-->
