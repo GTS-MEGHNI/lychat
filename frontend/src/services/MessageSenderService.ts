@@ -1,4 +1,5 @@
-import type { ContentType, ConversationMessage, FileMetaData } from '@/types/conversation'
+import type { ConversationMessage, FileMetaData } from '@/types/conversation'
+import { ContentType } from '@/types/conversation'
 import store from '@/store'
 import axios from 'axios'
 import type { Discussion } from '@/types/Discussion'
@@ -39,10 +40,10 @@ export class MessageSenderService {
   static reshapeMessage(message: DraftMessage): ConversationMessage {
     let content: string | FileMetaData
     switch (message.type) {
-      case 'TEXT':
+      case ContentType.Text:
         content = message.content as string
         break
-      case 'IMAGE':
+      case ContentType.Image:
         content = message.originalReaderResult as string
         break
       default:

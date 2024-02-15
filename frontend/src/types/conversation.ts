@@ -1,5 +1,11 @@
-export type ContentType = 'IMAGE' | 'TEXT' | 'FILE'
+//export type ContentType = 'IMAGE' | 'TEXT' | 'FILE'
 export type ConversationId = number | string
+
+export enum ContentType {
+  Image = 'IMAGE',
+  Text = 'TEXT',
+  File = 'FILE'
+}
 
 export interface Participant {
   id: number | string

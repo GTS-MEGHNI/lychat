@@ -6,12 +6,41 @@ import { MessageSenderService } from '@/services/MessageSenderService'
 let input = ref<string>('')
 let editableDiv = ref<HTMLDivElement>()
 let instance: ReturnType<typeof getCurrentInstance> = null
+let lineBreakEnabled = ref<boolean>(false)
 
 onMounted(() => {
   instance = getCurrentInstance()
 })
 
-function sendMessage() {
+function sendMessage(event: KeyboardEvent | MouseEvent) {
+
+  if (event instanceof KeyboardEvent) {
+    event.preventDefault()
+    console.log(lineBreakEnabled.value)
+    if (lineBreakEnabled.value) {
+      if (instance !== null) {
+        /*const elem: HTMLDivElement = instance.refs.editableDiv as HTMLDivElement;
+        (instance.refs.editableDiv as HTMLDivElement).innerHTML += '<p><br /></p>'
+
+
+        const range = document.createRange()
+        range.selectNodeContents(elem)
+
+        // Collapse the range to the end
+        range.collapse(false)
+
+        // Clear any existing selection
+        const selection = window.getSelection()
+        selection?.removeAllRanges()
+
+        // Add the collapsed range to the selection
+        selection?.addRange(range)
+        // document.execCommand('insertHTML', false, '<br />')*/
+      }
+      //return
+    }
+  }
+
   if (input.value !== '') {
     MessageSenderService.send({ content: input.value, type: 'TEXT' })
     setTimeout(function() {
@@ -47,10 +76,29 @@ function updateContent() {
     input.value = ((instance.refs.editableDiv as HTMLDivElement).innerText)
 }
 
-function handleContentPaste(event: any) {
+function handleContentPaste(event: ClipboardEvent) {
+  console.log(event)
   event.preventDefault()
-  const content = event.clipboardData.getData('text/plain')
+  const content = event.clipboardData?.getData('text/plain')
   document.execCommand('insertText', false, content)
+}
+
+function insertNewLine(event: KeyboardEvent) {
+  event.preventDefault()
+  insertContent("<p><br /></p>")
+}
+
+function insertContent(content: string) {
+  if (instance !== null) {
+    const elem: HTMLDivElement = instance.refs.editableDiv as HTMLDivElement;
+    (instance.refs.editableDiv as HTMLDivElement).innerHTML += content
+    const range = document.createRange()
+    range.selectNodeContents(elem)
+    range.collapse(false)
+    const selection = window.getSelection()
+    selection?.removeAllRanges()
+    selection?.addRange(range)
+  }
 }
 
 </script>
@@ -70,7 +118,9 @@ function handleContentPaste(event: any) {
            contenteditable="true"
            role="textbox"
            spellcheck="true"
-           tabindex="0">
+           tabindex="0"
+           @keydown.enter.exact="sendMessage"
+           @keydown.ctrl.enter="insertNewLine">
       </div>
     </div>
     <div class="flex gap-2">
