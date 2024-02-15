@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="flex items-center text-soft mb-[3.75rem]">
+  <div class="bg-dark-primary flex items-center text-soft mb-[3.75rem] sticky top-0 py-4 pl-4">
     <div class="w-[3.75rem] sh-[3.75rem] mr-[1.125rem]">
       <img :src="avatarUrl" alt="" />
     </div>

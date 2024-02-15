@@ -44,10 +44,11 @@ onUnmounted(currentDiscussionWatcher)
 </script>
 
 <template>
-  <div ref="messagesContainer" class="bg-dark-surface w-full pl-[1.875rem] pt-[1.875rem] pr-[2.313rem]">
+  <div ref="messagesContainer" class="bg-dark-surface w-full">
     <div v-if="Object.keys(currentDiscussion).length !== 0">
-      <ConversationHeaderComponent :avatarUrl="(currentDiscussion as Discussion).avatarUrl"
-                                   :title="(currentDiscussion as Discussion).title" />
+      <ConversationHeaderComponent
+        :avatarUrl="(currentDiscussion as Discussion).avatarUrl"
+        :title="(currentDiscussion as Discussion).title" />
       <DiscussionComponent :discussionMessages="discussionMessages" />
     </div>
   </div>

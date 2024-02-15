@@ -10,15 +10,15 @@ onBeforeMount(() => {
   store = useStore()
 })
 
-const fileSendingText = computed( () => {
+const fileSendingText = computed(() => {
   let content: string = ''
   if (props.latestMessage.type === 'IMAGE')
     content = content + 'sent an image'
   else if (props.latestMessage.type === 'FILE')
     content = content + 'sent a file'
 
-  if(props.latestMessage.owner.id === store.getters.getUserId)
-    return  'You ' + content
+  if (props.latestMessage.owner.id === store.getters.getUserId)
+    return 'You ' + content
   else
     return props.latestMessage.owner.username + ' ' + content
 
@@ -33,7 +33,8 @@ const fileSendingText = computed( () => {
         <img class="w-[50px] h-[50px]" :src="avatarUrl" alt="" />
       </div>
 
-      <div v-if="isActive" class="flex justify-center items-center absolute h-3 w-3 bg-white rounded-full bottom-1 right-0">
+      <div v-if="isActive"
+           class="flex justify-center items-center absolute h-3 w-3 bg-white rounded-full bottom-1 right-0">
         <div class="mx-auto absolute h-2 w-2 bg-green rounded-full"></div>
       </div>
 
@@ -50,16 +51,17 @@ const fileSendingText = computed( () => {
           <span v-if="latestMessage.owner.id === store.getters.getUserId">You : </span> {{ latestMessage.content }}
         </div>
 
-        <span v-if="latestMessage.type !== 'TEXT'" class="text-gray-primary text-sm">
-          <span>{{fileSendingText}}</span>
+        <span v-if="latestMessage.type !== 'TEXT'"
+              class="max-w-36 overflow-hidden text-ellipsis text-nowrap text-gray-primary text-sm">
+          <span>{{ fileSendingText }}</span>
         </span>
 
       </div>
       <div class="flex flex-col items-end">
         <span class="text-gray-primary text-[.813rem]">{{ latestMessage.sentAt }}</span>
         <span
-          class="flex items-center justify-center bg-primary rounded-full w-4 h-4 text-xs font-bold"
-        >{{ unreadMessagesCount }}
+          class="flex items-center justify-center bg-primary rounded-full w-4 h-4 text-xs font-bold">
+          {{ unreadMessagesCount }}
         </span>
       </div>
     </div>

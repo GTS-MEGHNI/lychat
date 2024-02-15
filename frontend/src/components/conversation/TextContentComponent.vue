@@ -1,13 +1,15 @@
 <script setup lang="ts">
 
-defineProps({
-  content: null
+let props = defineProps({
+  content: null,
+  backgroundColor: null
 })
+
 
 </script>
 
 <template>
-  <div class="max-w-xl rounded-2xl w-fit bg-primary text-soft px-4 py-[.75rem] mt-2">
+  <div :class="['max-w-xl', 'rounded-2xl', 'w-fit', `bg-${backgroundColor}`, 'text-soft', 'px-4', 'py-[.75rem]', 'mt-2']">
     <p style="white-space: pre-line">{{ content }}</p>
   </div>
 </template>

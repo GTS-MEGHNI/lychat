@@ -18,7 +18,7 @@ function shouldDisplayInfoChecker(index: number): boolean {
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="pl-[1.875rem] pr-[2.313rem] flex flex-col">
     <div v-for="(discussionMessage, index) in discussionMessages" :key="index">
       <ConversationMessageComponent
         v-if="!discussionMessage.isCurrentUserMessage"
