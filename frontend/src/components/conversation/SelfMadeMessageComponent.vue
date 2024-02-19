@@ -3,6 +3,7 @@ import type { ConversationMessage, FileMetaData } from '@/types/conversation'
 import TextContentComponent from '@/components/conversation/TextContentComponent.vue'
 import ImageContentComponent from '@/components/conversation/ImageContentComponent.vue'
 import FileContentComponent from '@/components/conversation/FileContentComponent.vue'
+import AudioContentComponent from '@/components/conversation/AudioContentComponent.vue'
 
 interface AdditionProps {
   shouldDisplayInfo: boolean
@@ -24,10 +25,13 @@ defineProps<ConversationMessage & AdditionProps>()
       <ImageContentComponent v-else-if="type === 'IMAGE'"
                              backgroundColor="primary"
                              :content="content" />
-      <FileContentComponent v-else
+      <FileContentComponent v-else-if="type === 'FILE'"
                             :name="(content as FileMetaData).name"
                             :size="(content as FileMetaData).size"
                             :url="(content as FileMetaData).url" />
+
+      <AudioContentComponent v-else
+                             :content="(content as FileMetaData).url" />
     </div>
     <div class="w-[2.125rem] h-[2.125rem] ml-[.688rem]">
       <img v-show="shouldDisplayInfo" :src="owner.avatarUrl" alt="" />

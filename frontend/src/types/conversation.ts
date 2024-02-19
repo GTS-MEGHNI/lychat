@@ -4,6 +4,7 @@ export type ConversationId = number | string
 export enum ContentType {
   Image = 'IMAGE',
   Text = 'TEXT',
+  Audio = 'AUDIO',
   File = 'FILE'
 }
 
@@ -17,7 +18,8 @@ export interface FileMetaData {
   name: string,
   size: number,
   url?: string,
-  base64?: string
+  base64?: string,
+  originalReaderResult?: string
 }
 
 export interface ConversationMessage {

@@ -2,103 +2,59 @@
 import { getCurrentInstance, onMounted, ref } from 'vue'
 import { FileSenderService } from '@/services/FileSenderService'
 import { MessageSenderService } from '@/services/MessageSenderService'
+import { ContentEditableUtil } from '@/utils/content-editable.util'
+import { ContentType } from '@/types/conversation'
 
 let input = ref<string>('')
 let editableDiv = ref<HTMLDivElement>()
 let instance: ReturnType<typeof getCurrentInstance> = null
-let lineBreakEnabled = ref<boolean>(false)
 
 onMounted(() => {
   instance = getCurrentInstance()
 })
 
-function sendMessage(event: KeyboardEvent | MouseEvent) {
+function emitMessageSentEvent() {
+  setTimeout(() => instance !== null ? instance.emit('messageSent') : {}, 100);
+}
 
-  if (event instanceof KeyboardEvent) {
-    event.preventDefault()
-    console.log(lineBreakEnabled.value)
-    if (lineBreakEnabled.value) {
-      if (instance !== null) {
-        /*const elem: HTMLDivElement = instance.refs.editableDiv as HTMLDivElement;
-        (instance.refs.editableDiv as HTMLDivElement).innerHTML += '<p><br /></p>'
-
-
-        const range = document.createRange()
-        range.selectNodeContents(elem)
-
-        // Collapse the range to the end
-        range.collapse(false)
-
-        // Clear any existing selection
-        const selection = window.getSelection()
-        selection?.removeAllRanges()
-
-        // Add the collapsed range to the selection
-        selection?.addRange(range)
-        // document.execCommand('insertHTML', false, '<br />')*/
-      }
-      //return
-    }
-  }
-
-  if (input.value !== '') {
-    MessageSenderService.send({ content: input.value, type: 'TEXT' })
-    setTimeout(function() {
-      if (instance !== null) instance.emit('messageSent')
-    }, 100)
-    if (instance !== null) {
-      (instance.refs.editableDiv as HTMLDivElement).innerText = ''
-      input.value = ''
-    }
+function sendTextMessage(event: KeyboardEvent) {
+  event.preventDefault()
+  if (ContentEditableUtil.validTextContent(input.value) && instance !== null) {
+    MessageSenderService.send({ content: input.value, type: ContentType.Text })
+    emitMessageSentEvent()
+    ContentEditableUtil.resetContent(instance)
+    input.value = ''
   }
 }
+
 
 function openFilePicker() {
   const filePicker: HTMLInputElement = (instance?.refs.filePicker as HTMLInputElement)
   filePicker.click()
 }
 
-function handleImagePicked(event: Event) {
+function handleFilePicked(event: Event) {
   const target = (event.target as HTMLInputElement)
   if (target && target.files) {
     const file: File = target.files[0]
     if (file) {
-      FileSenderService.handleFile(file)
-      setTimeout(function() {
-        if (instance !== null) instance.emit('messageSent')
-      }, 100)
+      FileSenderService.sendFile(file)
+      emitMessageSentEvent()
     }
   }
 }
 
 function updateContent() {
-  if (instance !== null)
-    input.value = ((instance.refs.editableDiv as HTMLDivElement).innerText)
+  instance !== null ? input.value = ((instance.refs.editableDiv as HTMLDivElement).innerText) : {}
 }
 
 function handleContentPaste(event: ClipboardEvent) {
-  console.log(event)
-  event.preventDefault()
-  const content = event.clipboardData?.getData('text/plain')
-  document.execCommand('insertText', false, content)
+  ContentEditableUtil.insertPastedContentAsText(event)
 }
 
 function insertNewLine(event: KeyboardEvent) {
   event.preventDefault()
-  insertContent("<p><br /></p>")
-}
-
-function insertContent(content: string) {
-  if (instance !== null) {
-    const elem: HTMLDivElement = instance.refs.editableDiv as HTMLDivElement;
-    (instance.refs.editableDiv as HTMLDivElement).innerHTML += content
-    const range = document.createRange()
-    range.selectNodeContents(elem)
-    range.collapse(false)
-    const selection = window.getSelection()
-    selection?.removeAllRanges()
-    selection?.addRange(range)
-  }
+  instance !== null ? ContentEditableUtil.insertNewLine(instance) : ''
 }
 
 </script>
@@ -107,7 +63,10 @@ function insertContent(content: string) {
   <div class="flex items-center bg-dark-type py-[1.188rem] px-4">
     <div>
       <div>
-        <button @click="openFilePicker"><img src="../../assets/icons/gallery.svg" alt="" /></button>
+        <button @click="openFilePicker">
+          <img src="../../assets/icons/gallery.svg" alt="" />
+          <input @change="handleFilePicked" ref="filePicker" type="file" style="display: none" />
+        </button>
       </div>
     </div>
     <div class="max-h-32 overflow-y-auto w-full mx-2 rounded-[1.563rem] bg-dark-primary py-4 px-[1.5rem]">
@@ -119,18 +78,9 @@ function insertContent(content: string) {
            role="textbox"
            spellcheck="true"
            tabindex="0"
-           @keydown.enter.exact="sendMessage"
+           @keydown.enter.exact="sendTextMessage"
            @keydown.ctrl.enter="insertNewLine">
       </div>
-    </div>
-    <div class="flex gap-2">
-      <div>
-        <button @click="sendMessage">
-          <input @change="handleImagePicked" ref="filePicker" type="file" style="display: none" />
-          <img src="../../assets/icons/send.svg" alt="" />
-        </button>
-      </div>
-
     </div>
   </div>
 </template>

@@ -3,22 +3,27 @@ import type { ContentType } from '@/types/conversation'
 
 export class FileSenderService {
 
-  /*static supportedTypes = ['jpeg', 'jpg', 'png', 'txt']*/
+  static fileType: ContentType
+  static base64EncodedString: string
+  static fileReader: FileReader
+  static file: File
 
-  static handleFile(file: File) {
-    const reader: FileReader = new FileReader()
-    reader.readAsDataURL(file)
-    const fileType: string = this.getFileType(file.type)
-    reader.onload = () => {
-      const base64EncodedString: string = FileSenderService.getBase64EncodedStringFrom(reader.result as string)
-      MessageSenderService.send(({
-        'content': base64EncodedString,
-        'type': this.getType(fileType),
-        'originalReaderResult': reader.result as string,
-        'fileName': file.name,
-        'fileSizeInBytes': file.size
-      } as DraftMessage)).then()
-    }
+  static sendFile(file: File) {
+    this.file = file
+    this.readFile(file).then(() => MessageSenderService.send(this.buildDraftMessage()).then())
+  }
+
+  static readFile(file: File) : Promise<void> {
+    return new Promise<void>(resolve => {
+      this.fileReader = new FileReader()
+      this.fileReader.readAsDataURL(file)
+      this.fileType = this.getFileType(file.type)
+      this.fileReader.onload = () => {
+        this.base64EncodedString = FileSenderService.getBase64EncodedStringFrom(this.fileReader.result as string)
+        resolve()
+      }
+    })
+
   }
 
   static getBase64EncodedStringFrom(result: string): string {
@@ -26,16 +31,25 @@ export class FileSenderService {
     return (result.match(regex) as Array<string>)[1]
   }
 
-  static getFileType(fileType: string): string {
-    return (fileType.split('/')[0])
-  }
-
-  static getType(fileType: string): ContentType {
-    switch (fileType) {
+  static getFileType(fileOriginalType: string): ContentType {
+    switch (fileOriginalType.split('/')[0]) {
       case 'image':
-        return 'IMAGE'
+        return <ContentType>'IMAGE'
+      case 'audio':
+        return <ContentType>'AUDIO'
       default:
-        return 'FILE'
+        return <ContentType>'FILE'
     }
   }
+
+  static buildDraftMessage() : DraftMessage {
+    return {
+      'content': this.base64EncodedString,
+      'type': this.fileType,
+      'originalReaderResult': this.fileReader.result as string,
+      'fileName': this.file.name,
+      'fileSizeInBytes': this.file.size
+    }
+  }
+
 }

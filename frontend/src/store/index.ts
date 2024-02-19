@@ -91,12 +91,13 @@ const store = createStore<RootState>({
     },
 
     messageCreated: (state: ActionContext<RootState, RootState>, payload: ConversationMessage) => {
+      console.log(payload)
       state.commit('appendMessageInCurrentDiscussion', payload)
     },
 
     messageStored: (state: ActionContext<RootState, RootState>, payload: DispatchedConversationMessage) => {
       state.commit('updateMessageId', payload)
-      if(payload.type === 'FILE') 
+      if(payload.type === 'FILE' || payload.type === 'AUDIO')
         state.commit('updateMessageFileUrl', payload)
       state.commit('updateConversationLatestMessage', payload as ConversationMessage)
     },

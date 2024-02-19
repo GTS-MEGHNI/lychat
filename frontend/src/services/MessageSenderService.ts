@@ -46,6 +46,15 @@ export class MessageSenderService {
       case ContentType.Image:
         content = message.originalReaderResult as string
         break
+      case ContentType.Audio: {
+        content = {
+          name: message.fileName,
+          size: message.fileSizeInBytes,
+          base64: message.content,
+          originalReaderResult: message.originalReaderResult
+        } as FileMetaData
+        break
+      }
       default:
         content = {
           name: message.fileName,
