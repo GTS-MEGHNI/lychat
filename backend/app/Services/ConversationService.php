@@ -56,7 +56,7 @@ class ConversationService
         return match ($this->payload['type']) {
             Dictionary::TEXT_CONTENT => $this->payload['content'],
             Dictionary::IMAGE_CONTENT => $this->getStoredImageFileName(),
-            Dictionary::FILE_CONTENT => $this->getStoredFileName()
+            Dictionary::AUDIO_CONTENT, Dictionary::FILE_CONTENT => $this->getStoredFileName()
         };
     }
 

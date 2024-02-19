@@ -22,7 +22,7 @@ class AddMessageRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'type' => ['required', Rule::in([Dictionary::TEXT_CONTENT, Dictionary::IMAGE_CONTENT, Dictionary::FILE_CONTENT])],
+            'type' => ['required', Rule::in([Dictionary::TEXT_CONTENT, Dictionary::IMAGE_CONTENT, Dictionary::FILE_CONTENT, Dictionary::AUDIO_CONTENT])],
             'content' => ['required', new ImageRule($this->input('type'))],
             'content.base64' => ['required_if:type,'.Dictionary::FILE_CONTENT, 'string', new FileRule()],
             'content.name' => ['required_if:type,'.Dictionary::FILE_CONTENT, 'string', 'max:100'],

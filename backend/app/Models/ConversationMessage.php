@@ -68,7 +68,7 @@ class ConversationMessage extends Model
                 return match ($this->content_type) {
                     Dictionary::TEXT_CONTENT => $value,
                     Dictionary::IMAGE_CONTENT => env('APP_URL').'/conversations/'.$this->conversation_id.'/'.$value,
-                    Dictionary::FILE_CONTENT => [
+                    Dictionary::FILE_CONTENT, Dictionary::AUDIO_CONTENT => [
                         'name' => $this->file_name,
                         'size' => $this->file_size,
                         'url' => env('APP_URL').'/conversations/'.$this->conversation_id.'/'.$value,
