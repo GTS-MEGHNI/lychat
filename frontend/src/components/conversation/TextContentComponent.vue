@@ -9,7 +9,7 @@ let props = defineProps({
 </script>
 
 <template>
-  <div :class="['max-w-xl', 'rounded-2xl', 'w-fit', `bg-${backgroundColor}`, 'text-soft', 'px-4', 'py-[.75rem]', 'mt-2']">
+  <div :class="['max-w-xl', 'rounded-2xl', 'w-fit', `bg-${backgroundColor}`, 'text-soft', 'px-4', 'py-[.75rem]']">
     <p style="white-space: pre-line">{{ content }}</p>
   </div>
 </template>

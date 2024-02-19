@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-  <div :class="['max-w-72', 'rounded-xl', 'w-fit', `bg-${backgroundColor}`, 'text-soft', 'px-2', 'py-[.4rem]', 'mt-2']">
+  <div :class="['max-w-72', 'rounded-xl', 'w-fit', `bg-${backgroundColor}`, 'text-soft', 'px-2', 'py-[.4rem]']">
     <img class="rounded-lg" :src="content" alt="" />
   </div>
 </template>
